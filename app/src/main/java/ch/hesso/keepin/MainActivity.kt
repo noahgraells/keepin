@@ -24,13 +24,22 @@ class MainActivity : AppCompatActivity() {
     fun bottomNavigationItemSelected(item : MenuItem) : Boolean {
 
         var selectedFragment : Fragment ?= null
+        var elevation : Float = 4f
 
         when(item.itemId) {
-            R.id.navigation_profile -> selectedFragment = ProfileFragment()
-            R.id.navigation_contacts -> selectedFragment = ContactsFragment()
-            else -> selectedFragment = DiscoverFragment()
+            R.id.navigation_profile -> {
+                selectedFragment = ProfileFragment()
+            }
+            R.id.navigation_contacts -> {
+                selectedFragment = ContactsFragment()
+            }
+            else ->  {
+                selectedFragment = DiscoverFragment()
+                elevation = 0f
+            }
         }
 
+        supportActionBar?.elevation = elevation
         supportFragmentManager.beginTransaction().replace(R.id.fragment_container, selectedFragment!!).commit()
         return true;
     }
