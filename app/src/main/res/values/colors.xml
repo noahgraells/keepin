@@ -4,8 +4,13 @@
     <color name="white">#FFF</color>
 
     <color name="green">#77D353</color>
+    <color name="yellow">#f2d65a</color>
+    <color name="red">#F95F62</color>
     <color name="darkGrey">#343F4B</color>
+    <color name="veryDarkGrey">#232930</color>
     <color name="lightGrey">#CCCCCC</color>
+    <color name="veryLightGrey">#EFEFEF</color>
+
 
     <color name="lightRed">#FFAAAA</color>
     <color name="lightGreen">#AAFFAA</color>

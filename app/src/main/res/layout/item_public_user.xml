@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_margin="@dimen/semi_list_padding"
+    android:background="@drawable/shape_card"
+    android:gravity="center_vertical">
+
+    <ImageView
+        android:id="@+id/imv_profile_pic"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_weight="0" />
+
+    <TextView
+        android:id="@+id/txv_firstname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="?attr/colorMainText"
+        android:textSize="@dimen/card_title" />
+
+
+    <ImageButton
+        android:id="@+id/btn_action"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_weight="0"
+        android:background="@drawable/shape_icon_button"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_ask_24dp" />
+</LinearLayout>

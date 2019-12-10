@@ -9,9 +9,12 @@ import android.view.ViewGroup
 import androidx.viewpager.widget.ViewPager
 import ch.hesso.keepin.R
 import ch.hesso.keepin.adapters.DiscoverPagerAdapter
+import ch.hesso.keepin.pojos.PublicUser
 import com.google.android.material.tabs.TabLayout
 
 class DiscoverFragment : Fragment() {
+
+    val animals: ArrayList<PublicUser> = ArrayList()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_discover, container, false)
@@ -22,6 +25,8 @@ class DiscoverFragment : Fragment() {
 
         setupViewPager(viewPager)
         tabs.setupWithViewPager(viewPager)
+
+
 
         return view;
     }

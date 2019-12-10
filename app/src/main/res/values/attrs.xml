@@ -3,5 +3,6 @@
     <declare-styleable name="ds">
         <attr name="colorMainText" format="color"/>
         <attr name="colorDisableText" format="color"/>
+        <attr name="colorMainBackground" format="color"/>
     </declare-styleable>
 </resources>
