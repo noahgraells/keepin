@@ -21,6 +21,23 @@ class SearchListAdapter(val items : ArrayList<PublicUser>) : RecyclerView.Adapte
         return items.size
     }
 
+    fun addItem(user: PublicUser)
+    {
+        items.add(user)
+        notifyItemInserted(itemCount - 1);
+    }
+
+    fun removeItem(endpointId : String)
+    {
+        for (i in items.indices) {
+            if (items[i].endpointId == endpointId)
+            {
+                items.removeAt(i)
+                notifyItemRemoved(i)
+            }
+        }
+    }
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val pu = items.get(position)
