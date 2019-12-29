@@ -6,8 +6,18 @@
     <string name="tab_search">SEARCH</string>
     <string name="tab_notifications">NOTIF.</string>
 
+    <string name="lblUserName">Username</string>
+    <string name="saved_username_key">username</string>
+
+
+    <string name="endpoint_id_key">endpoint_id</string>
+
     <string name="error_missing_permissions">Cannot start without required permissions</string>
 
+    <string name="toast_discover">Discovering nearby users...</string>
     <string name="toast_connected">Connected to %s</string>
     <string name="toast_disconnected">Disconnected from %s</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

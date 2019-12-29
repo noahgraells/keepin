@@ -1,8 +1,11 @@
 package ch.hesso.keepin
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -17,11 +20,16 @@ import ch.hesso.keepin.pojos.PublicUser
 import com.google.android.gms.nearby.connection.ConnectionInfo
 import com.google.android.gms.nearby.connection.Strategy
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import android.widget.TextView
+import android.widget.ImageButton
+import ch.hesso.keepin.fragments.SelectedUserFragment
+
+
 
 
 class MainActivity : ConnectionsActivity() {
 
-    private var userName = "Farid"
+    private val defaultUsername = "username"
 
     private val STRATEGY = Strategy.P2P_CLUSTER
 
@@ -39,7 +47,7 @@ class MainActivity : ConnectionsActivity() {
         setSupportActionBar(toolbar)
 
         bottomNavigationView.setOnNavigationItemSelectedListener { item -> bottomNavigationItemSelected(item)}
-        bottomNavigationView.setSelectedItemId(R.id.navigation_discover);
+        bottomNavigationView.setSelectedItemId(R.id.navigation_profile);
 
         SERVICE_ID = packageName
     }
@@ -83,7 +91,8 @@ class MainActivity : ConnectionsActivity() {
     }
 
     override fun getName(): String {
-        return userName
+        val sharedPref = getPreferences(Context.MODE_PRIVATE) ?: return defaultUsername
+        return sharedPref.getString(getString(R.string.saved_username_key), "").orEmpty()
     }
 
     override fun getServiceId(): String {
@@ -97,7 +106,18 @@ class MainActivity : ConnectionsActivity() {
     override fun onEndpointDiscovered(endpoint: Endpoint) {
         // We found an advertiser!
         stopDiscovering()
-        connectToEndpoint(endpoint)
+        if (!NearbyUsers.userList.contains(endpoint.id))
+        {
+            connectToEndpoint(endpoint)
+        }
+    }
+
+    override fun startDiscovering() {
+        super.startDiscovering()
+
+        Toast.makeText(
+            this, getString(R.string.toast_discover), Toast.LENGTH_LONG
+        ).show()
     }
 
     override fun onConnectionInitiated(endpoint: Endpoint, connectionInfo: ConnectionInfo) {
@@ -112,18 +132,17 @@ class MainActivity : ConnectionsActivity() {
     override fun onEndpointConnected(endpoint: Endpoint) {
         Toast.makeText(
             this, getString(R.string.toast_connected, endpoint.name), Toast.LENGTH_SHORT
-        )
-            .show()
+        ).show()
 //        setState(State.CONNECTED)
 
         NearbyUsers.userList.addItem(PublicUser(endpoint.id, endpoint.name, Status.CONNECTED))
+        startDiscovering()
     }
 
     override fun onEndpointDisconnected(endpoint: Endpoint) {
         Toast.makeText(
             this, getString(R.string.toast_disconnected, endpoint.name), Toast.LENGTH_SHORT
-        )
-            .show()
+        ).show()
 //        setState(State.SEARCHING)
 
         NearbyUsers.userList.removeItem(endpoint.id)
@@ -131,8 +150,24 @@ class MainActivity : ConnectionsActivity() {
 
     override fun onConnectionFailed(endpoint: Endpoint) {
         // Let's try someone else.
-//        if (getState() == State.SEARCHING) {
+        if (!isDiscovering) {
             startDiscovering()
-//        }
+        }
+    }
+
+    fun userSelected(view : View)
+    {
+        val vwParentRow = view as LinearLayout
+        val child = vwParentRow.getChildAt(1) as TextView
+        val btnChild = vwParentRow.getChildAt(2) as ImageButton
+
+        val endpointId = NearbyUsers.userList.getUser(child.text.toString())?.endpointId
+
+        var fragment : Fragment? = SelectedUserFragment()
+        val args = Bundle()
+        args.putString(getString(R.string.endpoint_id_key), endpointId)
+        fragment!!.setArguments(args)
+
+        supportFragmentManager.beginTransaction().replace(R.id.fragment_container, fragment!!).addToBackStack(null).commit()
     }
 }

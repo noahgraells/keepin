@@ -5,8 +5,6 @@ import ch.hesso.keepin.pojos.PublicUser
 
 class NearbyUsers {
 
-
-
     companion object {
         var publicUsers = ArrayList<PublicUser>()
         var userList = SearchListAdapter(publicUsers)
