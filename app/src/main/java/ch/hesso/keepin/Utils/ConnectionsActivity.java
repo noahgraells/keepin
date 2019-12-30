@@ -454,7 +454,7 @@ public abstract class ConnectionsActivity extends AppCompatActivity {
     send(payload, mEstablishedConnections.keySet());
   }
 
-  protected void send(Payload payload, String endpointId) { send(payload, endpointId); }
+  protected void send(Payload payload, String endpointId) { mConnectionsClient.sendPayload(endpointId, payload); }
 
   private void send(Payload payload, Set<String> endpoints) {
     mConnectionsClient

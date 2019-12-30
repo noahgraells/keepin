@@ -23,8 +23,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import android.widget.TextView
 import android.widget.ImageButton
 import ch.hesso.keepin.fragments.SelectedUserFragment
-
-
+import com.google.android.gms.nearby.connection.Payload
 
 
 class MainActivity : ConnectionsActivity() {
@@ -169,5 +168,16 @@ class MainActivity : ConnectionsActivity() {
         fragment!!.setArguments(args)
 
         supportFragmentManager.beginTransaction().replace(R.id.fragment_container, fragment!!).addToBackStack(null).commit()
+    }
+
+    fun sendMessage(message: String, endpointId: String)
+    {
+        val payload = Payload.fromBytes(message.toByteArray())
+        send(payload, endpointId)
+    }
+
+    override fun onReceive(endpoint: Endpoint?, payload: Payload?) {
+        val bytes = payload?.asBytes() ?:return
+        logD(String(bytes))
     }
 }

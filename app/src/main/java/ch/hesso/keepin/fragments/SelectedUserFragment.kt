@@ -6,7 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
+import ch.hesso.keepin.MainActivity
 import ch.hesso.keepin.R
 
 
@@ -22,8 +24,9 @@ class SelectedUserFragment : Fragment() {
         val args = arguments
         val endpointId = args!!.getString(getString(R.string.endpoint_id_key), "")
 
-        val v = view.findViewById<TextView>(R.id.txtEndpointId)
-        v.text = endpointId
+        val btnRequestInformation = view.findViewById<Button>(R.id.btnRequestInformation)
+        btnRequestInformation!!.setOnClickListener{v -> (activity as MainActivity).sendMessage(getString(R.string.message_ask_for_permission), endpointId)}
+
 
         return view
     }
