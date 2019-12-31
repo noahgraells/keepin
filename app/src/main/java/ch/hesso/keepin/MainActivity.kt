@@ -5,25 +5,29 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.widget.ImageButton
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import ch.hesso.keepin.Utils.ConnectionsActivity
+import ch.hesso.keepin.Utils.MessageReceived
 import ch.hesso.keepin.Utils.NearbyUsers
 import ch.hesso.keepin.enums.Status
 import ch.hesso.keepin.fragments.ContactsFragment
 import ch.hesso.keepin.fragments.DiscoverFragment
 import ch.hesso.keepin.fragments.ProfileFragment
+import ch.hesso.keepin.fragments.SelectedUserFragment
 import ch.hesso.keepin.pojos.PublicUser
 import com.google.android.gms.nearby.connection.ConnectionInfo
+import com.google.android.gms.nearby.connection.Payload
 import com.google.android.gms.nearby.connection.Strategy
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import android.widget.TextView
-import android.widget.ImageButton
-import ch.hesso.keepin.fragments.SelectedUserFragment
-import com.google.android.gms.nearby.connection.Payload
+import ch.hesso.keepin.enums.MessageType
+import ch.hesso.keepin.pojos.Message
+import ch.hesso.keepin.pojos.UserInformations
+import org.apache.commons.lang3.SerializationUtils
 
 
 class MainActivity : ConnectionsActivity() {
@@ -34,19 +38,26 @@ class MainActivity : ConnectionsActivity() {
 
     private var SERVICE_ID = ""
 
+    private val listeners = ArrayList<MessageReceived>()
+
+    fun addListener(toAdd: MessageReceived) {
+        listeners.add(toAdd)
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTheme(R.style.AppTheme)
         setContentView(R.layout.activity_main)
 
-        val bottomNavigationView = findViewById(R.id.bottom_navigation) as BottomNavigationView
-        val toolbar = findViewById(R.id.toolbar) as Toolbar
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
 
-        toolbar.setTitle("");
+        toolbar.title = ""
         setSupportActionBar(toolbar)
 
         bottomNavigationView.setOnNavigationItemSelectedListener { item -> bottomNavigationItemSelected(item)}
-        bottomNavigationView.setSelectedItemId(R.id.navigation_profile);
+        bottomNavigationView.selectedItemId = R.id.navigation_profile
 
         SERVICE_ID = packageName
     }
@@ -85,8 +96,8 @@ class MainActivity : ConnectionsActivity() {
         }
 
         supportActionBar?.elevation = elevation
-        supportFragmentManager.beginTransaction().replace(R.id.fragment_container, selectedFragment!!).commit()
-        return true;
+        supportFragmentManager.beginTransaction().replace(R.id.fragment_container, selectedFragment).commit()
+        return true
     }
 
     override fun getName(): String {
@@ -165,19 +176,31 @@ class MainActivity : ConnectionsActivity() {
         var fragment : Fragment? = SelectedUserFragment()
         val args = Bundle()
         args.putString(getString(R.string.endpoint_id_key), endpointId)
-        fragment!!.setArguments(args)
+        fragment!!.arguments = args
 
-        supportFragmentManager.beginTransaction().replace(R.id.fragment_container, fragment!!).addToBackStack(null).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit()
     }
 
-    fun sendMessage(message: String, endpointId: String)
+    fun sendMessage(message: Message, endpointId: String)
     {
-        val payload = Payload.fromBytes(message.toByteArray())
+        val payload = Payload.fromBytes(SerializationUtils.serialize(message))
         send(payload, endpointId)
+
     }
+
 
     override fun onReceive(endpoint: Endpoint?, payload: Payload?) {
         val bytes = payload?.asBytes() ?:return
-        logD(String(bytes))
+
+        val message = SerializationUtils.deserialize<Message>(bytes)
+
+        if (message.type == MessageType.REQUEST_PERMISSION)
+        {
+            sendMessage(Message(MessageType.USER_INFORMATIONS, UserInformations("farid", "abdalla", "farid.abdalla@test.ch")), endpoint!!.id)
+        }
+
+        for (listener in listeners)
+            listener.messageReceived(message)
     }
+
 }

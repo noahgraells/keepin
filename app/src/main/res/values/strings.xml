@@ -8,7 +8,7 @@
     <string name="tab_notifications">NOTIF.</string>
 
     <string name="lblUserName">Username</string>
-    <string name="unknown_parameter">_???</string>
+    <string name="unknown_parameter">Permission not granted</string>
 
     <string name="request_information">Request information</string>
     <string name="email">Email</string>
