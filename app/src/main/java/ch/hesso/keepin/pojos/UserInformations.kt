@@ -12,7 +12,8 @@ import kotlin.reflect.full.memberProperties
 data class UserInformations(private var _userName: String = "",
                             private var _firstName: String = "",
                             private var _lastName : String = "",
-                            private var _email : String = ""): BaseObservable(),  Serializable
+                            private var _email : String = "",
+                            private var _canSendRequest : Boolean = true): BaseObservable(),  Serializable
 {
 
     var userName: String
@@ -43,22 +44,12 @@ data class UserInformations(private var _userName: String = "",
             notifyPropertyChanged(BR.email)
         }
 
-    fun <T : Any, R : Any> T.copyPropsFrom(fromObject: R, vararg props: KProperty<*>) {
-        // only consider mutable properties
-        val mutableProps = this::class.memberProperties.filterIsInstance<KMutableProperty<*>>()
-        // if source list is provided use that otherwise use all available properties
-        val sourceProps = if (props.isEmpty()) fromObject::class.memberProperties else props.toList()
-        // copy all matching
-        mutableProps.forEach { targetProp ->
-            sourceProps.find {
-                // make sure properties have same name and compatible types
-                it.name == targetProp.name && targetProp.returnType.isSupertypeOf(it.returnType)
-            }?.let { matchingProp ->
-                targetProp.setter.call(this, matchingProp.getter.call(fromObject))
-            }
+    var canSendRequest: Boolean
+        @Bindable get() = _canSendRequest
+        set(value) {
+            _canSendRequest = value
+            notifyPropertyChanged(BR.canSendRequest)
         }
-
-    }
 
     fun copyFrom(userInformations: UserInformations)
     {
@@ -66,5 +57,6 @@ data class UserInformations(private var _userName: String = "",
         this.firstName = userInformations.firstName
         this.lastName = userInformations.lastName
         this.email = userInformations.email
+        this.canSendRequest = userInformations.canSendRequest
     }
 }

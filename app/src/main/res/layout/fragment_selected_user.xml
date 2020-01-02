@@ -4,6 +4,8 @@
 
     <data>
 
+        <import type="android.view.View"/>
+
         <variable
             name="user"
             type="ch.hesso.keepin.pojos.UserInformations" />
@@ -116,6 +118,7 @@
                 android:id="@+id/btnRequestInformation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:visibility="@{user.canSendRequest ? View.VISIBLE : View.GONE}"
                 android:text="@string/request_information" />
 
         </LinearLayout>

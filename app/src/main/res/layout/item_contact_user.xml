@@ -8,7 +8,7 @@
     android:layout_gravity="center"
     android:layout_margin="@dimen/semi_list_padding"
     android:gravity="center_vertical"
-    android:onClick="userSelected"
+    android:onClick="contactSelected"
     >
 
     <ImageView
@@ -18,8 +18,17 @@
         android:layout_weight="0"
         app:srcCompat="@drawable/pp_02" />
 
+
     <TextView
-        android:id="@+id/txv_lastname"
+        android:id="@+id/txv_contact_firstname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="?attr/colorMainText"
+        android:textSize="@dimen/card_title" />
+
+    <TextView
+        android:id="@+id/txv_contact_lastname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"

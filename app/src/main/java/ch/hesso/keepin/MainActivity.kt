@@ -2,6 +2,7 @@ package ch.hesso.keepin
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
@@ -83,6 +84,8 @@ class MainActivity : ConnectionsActivity() {
 
         val obj = gson.fromJson<ArrayList<UserInformations>>(json, type) ?: return
         NearbyUsers.contacts = obj
+
+        Log.d("Keepin","LENGTH : " + NearbyUsers.contacts.size + " ::: " + json)
     }
 
     fun saveContacts()
@@ -213,6 +216,23 @@ class MainActivity : ConnectionsActivity() {
         var fragment : Fragment? = SelectedUserFragment()
         val args = Bundle()
         args.putString(getString(R.string.endpoint_id_key), endpointId)
+        fragment!!.arguments = args
+
+        supportFragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit()
+    }
+
+    fun contactSelected(view: View)
+    {
+        val vwParentRow = view as LinearLayout
+        val image = vwParentRow.getChildAt(0) as ImageView
+        val firstName = (vwParentRow.getChildAt(1) as TextView).text.toString()
+        val lastName = (vwParentRow.getChildAt(2) as TextView).text.toString()
+
+
+        var fragment : Fragment? = SelectedUserFragment()
+        val args = Bundle()
+        args.putString(getString(R.string.firstname_key), firstName)
+        args.putString(getString(R.string.lastname_key), lastName)
         fragment!!.arguments = args
 
         supportFragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit()

@@ -15,7 +15,7 @@ class ContactListAdapter(val items : ArrayList<PublicUser>) : RecyclerView.Adapt
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactViewHolder {
 
-        return ContactViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_public_user, parent, false))
+        return ContactViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_contact_user, parent, false))
 
     }
 
@@ -65,7 +65,7 @@ class ContactListAdapter(val items : ArrayList<PublicUser>) : RecyclerView.Adapt
 }
 
 class ContactViewHolder (view: View) : RecyclerView.ViewHolder(view) {
-    val firstname = view.txv_firstname
+    val firstname = view.txv_contact_firstname
     val actionButton = view.btn_action
-    val lastname = view.txv_lastname
+    val lastname = view.txv_contact_lastname
 }

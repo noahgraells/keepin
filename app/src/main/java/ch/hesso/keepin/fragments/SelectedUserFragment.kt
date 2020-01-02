@@ -12,6 +12,7 @@ import ch.hesso.keepin.MainActivity
 import ch.hesso.keepin.R
 import ch.hesso.keepin.Utils.ConnectionsActivity
 import ch.hesso.keepin.Utils.MessageReceived
+import ch.hesso.keepin.Utils.NearbyUsers
 import ch.hesso.keepin.databinding.FragmentSelectedUserBinding
 import ch.hesso.keepin.enums.MessageType
 import ch.hesso.keepin.pojos.Message
@@ -37,11 +38,31 @@ class SelectedUserFragment : Fragment(), MessageReceived {
         val args = arguments
         val endpointId = args!!.getString(getString(R.string.endpoint_id_key), "")
 
-        val btnRequestInformation = view.findViewById<Button>(R.id.btnRequestInformation)
-        btnRequestInformation!!.setOnClickListener{_ -> (activity as MainActivity).sendMessage(
-            Message(MessageType.REQUEST_PERMISSION, null), endpointId)}
+
+        if (!endpointId.isNullOrBlank())
+        {
+            val btnRequestInformation = view.findViewById<Button>(R.id.btnRequestInformation)
+            btnRequestInformation!!.setOnClickListener{_ -> (activity as MainActivity).sendMessage(
+                Message(MessageType.REQUEST_PERMISSION, null), endpointId)}
+        }
+        else
+        {
+            val firstname = args!!.getString(getString(R.string.firstname_key), "")
+            val lastname = args!!.getString(getString(R.string.lastname_key), "")
+
+            fillUser(firstname, lastname)
+        }
+
 
         return view
+    }
+
+    private fun fillUser(firstname: String, lastname: String)
+    {
+        var user = NearbyUsers.contacts.find { u -> u.firstName == firstname && u.lastName == lastname } ?: return
+
+        user.canSendRequest = false
+        fillUserInformations(user)
     }
 
     override fun messageReceived(endpoint: ConnectionsActivity.Endpoint?, message: Message) {
