@@ -1,47 +1,51 @@
 package ch.hesso.keepin.fragments
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-
+import androidx.databinding.DataBindingUtil
+import ch.hesso.keepin.MainActivity
 import ch.hesso.keepin.R
+import ch.hesso.keepin.databinding.FragmentProfileBinding
+
+import ch.hesso.keepin.databinding.FragmentSelectedUserBinding
+import ch.hesso.keepin.pojos.UserInformations
+import com.google.gson.Gson
+
+
 
 class ProfileFragment : Fragment() {
 
-    var edtUsername : EditText? = null
+    var userInfo : UserInformations? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
 
-        edtUsername = view.findViewById<View>(R.id.edtUsername) as EditText
+        userInfo = (activity as MainActivity).myUserInformations
+
+        val binding = DataBindingUtil.bind<FragmentProfileBinding>(view)
+
+        binding!!.user = userInfo
 
         return view
-    }
-
-    fun loadProfileData()
-    {
-        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
-        edtUsername!!.setText(sharedPref.getString(getString(R.string.saved_username_key), ""))
     }
 
     fun saveProfileData()
     {
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
-        with (sharedPref.edit()) {
-            putString(getString(R.string.saved_username_key), edtUsername!!.text.toString())
-            commit()
-        }
+        val prefsEditor = sharedPref.edit()
+        val gson = Gson()
+        val json = gson.toJson(userInfo)
+        prefsEditor.putString(getString(R.string.saved_informations_key), json)
+        prefsEditor.commit()
     }
 
     override fun onStart() {
         super.onStart()
-        loadProfileData()
 
         Log.v("Debug", "Profile - onStart");
     }
@@ -50,7 +54,6 @@ class ProfileFragment : Fragment() {
         super.onPause()
 
         saveProfileData()
-
         Log.v("Debug", "Profile - onPause");
     }
 

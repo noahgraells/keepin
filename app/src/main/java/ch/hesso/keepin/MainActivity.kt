@@ -2,7 +2,6 @@ package ch.hesso.keepin
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageButton
@@ -28,9 +27,12 @@ import ch.hesso.keepin.enums.MessageType
 import ch.hesso.keepin.pojos.Message
 import ch.hesso.keepin.pojos.UserInformations
 import org.apache.commons.lang3.SerializationUtils
+import com.google.gson.Gson
 
 
 class MainActivity : ConnectionsActivity() {
+
+    var myUserInformations : UserInformations = UserInformations()
 
     private val defaultUsername = "username"
 
@@ -50,6 +52,8 @@ class MainActivity : ConnectionsActivity() {
         setTheme(R.style.AppTheme)
         setContentView(R.layout.activity_main)
 
+        loadUserInformations()
+
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
 
@@ -60,6 +64,15 @@ class MainActivity : ConnectionsActivity() {
         bottomNavigationView.selectedItemId = R.id.navigation_profile
 
         SERVICE_ID = packageName
+    }
+
+    fun loadUserInformations()
+    {
+        val mPrefs = getPreferences(Context.MODE_PRIVATE)
+        val gson = Gson()
+        val json = mPrefs.getString(getString(R.string.saved_informations_key), "")
+        val obj = gson.fromJson(json, UserInformations::class.java)?: return
+        myUserInformations = obj
     }
 
     override fun onStart() {
@@ -196,7 +209,8 @@ class MainActivity : ConnectionsActivity() {
 
         if (message.type == MessageType.REQUEST_PERMISSION)
         {
-            sendMessage(Message(MessageType.USER_INFORMATIONS, UserInformations("farid", "abdalla", "farid.abdalla@test.ch")), endpoint!!.id)
+            var user = UserInformations("Kurokabe", "Farid", "Abdalla", "farid.abdalla@test.ch")
+            sendMessage(Message(MessageType.USER_INFORMATIONS, user), endpoint!!.id)
         }
 
         for (listener in listeners)

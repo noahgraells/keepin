@@ -6,5 +6,9 @@
     tools:context=".fragments.NotificationFragment"
     android:background="@color/lightGreen">
 
-
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/notification_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/semi_list_padding"/>
 </FrameLayout>
