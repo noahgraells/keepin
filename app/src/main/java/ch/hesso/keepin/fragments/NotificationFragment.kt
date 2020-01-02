@@ -6,11 +6,22 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import ch.hesso.keepin.MainActivity
 
 import ch.hesso.keepin.R
+import ch.hesso.keepin.Utils.ConnectionsActivity
 import ch.hesso.keepin.Utils.MessageReceived
+import ch.hesso.keepin.Utils.NearbyUsers
 import ch.hesso.keepin.enums.MessageType
+import ch.hesso.keepin.enums.Status
 import ch.hesso.keepin.pojos.Message
+import ch.hesso.keepin.pojos.PublicUser
 import ch.hesso.keepin.pojos.UserInformations
 
 class NotificationFragment : Fragment(),  MessageReceived {
@@ -18,16 +29,21 @@ class NotificationFragment : Fragment(),  MessageReceived {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_notification, container, false)
 
-        
+        (activity as MainActivity).addListener(this)
+        var notificationList = view.findViewById(R.id.notification_list) as RecyclerView
+
+        var layoutManager = LinearLayoutManager(activity)
+        notificationList!!.layoutManager = layoutManager
+        notificationList.adapter = NearbyUsers.notificationList
 
         return view
     }
 
-    override fun messageReceived(message: Message) {
+    override fun messageReceived(endpoint: ConnectionsActivity.Endpoint?, message: Message) {
         when (message.type)
         {
             MessageType.REQUEST_PERMISSION -> {
-//                fillUserInformations(message.content as UserInformations)
+                NearbyUsers.notificationList.addItem(PublicUser(endpoint!!.id, endpoint!!.name, Status.ASKED))
             }
         }
     }

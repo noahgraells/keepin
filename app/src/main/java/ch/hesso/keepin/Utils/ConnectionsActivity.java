@@ -558,7 +558,7 @@ public abstract class ConnectionsActivity extends AppCompatActivity {
   }
 
   /** Represents a device we can talk to. */
-  protected static class Endpoint {
+  public static class Endpoint {
     @NonNull private final String id;
     @NonNull private final String name;
 

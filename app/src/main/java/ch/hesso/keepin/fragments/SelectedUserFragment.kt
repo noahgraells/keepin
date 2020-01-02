@@ -13,6 +13,7 @@ import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import ch.hesso.keepin.MainActivity
 import ch.hesso.keepin.R
+import ch.hesso.keepin.Utils.ConnectionsActivity
 import ch.hesso.keepin.Utils.MessageReceived
 import ch.hesso.keepin.Utils.Util
 import ch.hesso.keepin.databinding.FragmentSelectedUserBinding
@@ -47,7 +48,7 @@ class SelectedUserFragment : Fragment(), MessageReceived {
         return view
     }
 
-    override fun messageReceived(message: Message) {
+    override fun messageReceived(endpoint: ConnectionsActivity.Endpoint?, message: Message) {
         when (message.type)
         {
             MessageType.USER_INFORMATIONS -> {

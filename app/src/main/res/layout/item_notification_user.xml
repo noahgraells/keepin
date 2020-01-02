@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_margin="@dimen/semi_list_padding"
+    android:background="@drawable/shape_card"
+    android:gravity="center_vertical">
+
+    <ImageView
+        android:id="@+id/imv_profile_pic"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_weight="0" />
+
+    <TextView
+        android:id="@+id/txv_firstname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="?attr/colorMainText"
+        android:textSize="@dimen/card_title" />
+
+
+    <TextView
+        android:id="@+id/txv_endpoint_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:textSize="@dimen/card_title"
+        android:visibility="gone" />
+
+    <ImageButton
+        android:id="@+id/btn_accept"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_weight="0"
+        android:background="@drawable/shape_icon_button"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_valid_24dp"
+        android:onClick="requestAccept"/>
+
+    <ImageButton
+        android:id="@+id/btn_refuse"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_weight="0"
+        android:background="@drawable/shape_icon_button"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_refuse_24dp"
+        android:onClick="requestRefuse"/>
+</LinearLayout>

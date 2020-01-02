@@ -61,6 +61,8 @@
                     android:layout_weight="1"
                     android:ems="10"
                     android:inputType="none"
+                    android:focusableInTouchMode="false"
+                    android:focusable="false"
                     android:text="@={user.firstName}" />
             </LinearLayout>
 
@@ -82,6 +84,8 @@
                     android:layout_weight="1"
                     android:ems="10"
                     android:inputType="none"
+                    android:focusableInTouchMode="false"
+                    android:focusable="false"
                     android:text="@={user.lastName}" />
             </LinearLayout>
 
@@ -103,6 +107,8 @@
                     android:layout_weight="1"
                     android:ems="10"
                     android:inputType="none"
+                    android:focusableInTouchMode="false"
+                    android:focusable="false"
                     android:text="@={user.email}" />
             </LinearLayout>
 

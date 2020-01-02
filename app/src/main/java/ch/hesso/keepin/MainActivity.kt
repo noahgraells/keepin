@@ -4,10 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.widget.ImageButton
-import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import ch.hesso.keepin.Utils.ConnectionsActivity
@@ -33,8 +30,6 @@ import com.google.gson.Gson
 class MainActivity : ConnectionsActivity() {
 
     var myUserInformations : UserInformations = UserInformations()
-
-    private val defaultUsername = "username"
 
     private val STRATEGY = Strategy.P2P_CLUSTER
 
@@ -114,8 +109,7 @@ class MainActivity : ConnectionsActivity() {
     }
 
     override fun getName(): String {
-        val sharedPref = getPreferences(Context.MODE_PRIVATE) ?: return defaultUsername
-        return sharedPref.getString(getString(R.string.saved_username_key), "").orEmpty()
+        return myUserInformations.firstName
     }
 
     override fun getServiceId(): String {
@@ -194,6 +188,33 @@ class MainActivity : ConnectionsActivity() {
         supportFragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit()
     }
 
+    fun requestAccept(view : View)
+    {
+        val vwParentRow = view.parent as LinearLayout
+        val image = vwParentRow.getChildAt(0) as ImageView
+        val firstName = vwParentRow.getChildAt(1) as TextView
+        val endpointId = (vwParentRow.getChildAt(2) as TextView).text.toString()
+
+        sendMessage(Message(MessageType.USER_INFORMATIONS, myUserInformations), endpointId)
+
+        removeNotification(endpointId)
+    }
+
+    fun requestRefuse(view : View)
+    {
+        val vwParentRow = view.parent as LinearLayout
+        val image = vwParentRow.getChildAt(0) as ImageView
+        val firstName = vwParentRow.getChildAt(1) as TextView
+        val endpointId = (vwParentRow.getChildAt(2) as TextView).text.toString()
+
+        removeNotification(endpointId)
+    }
+
+    private fun removeNotification(endpointId: String)
+    {
+        NearbyUsers.notificationList.removeItem(endpointId)
+    }
+
     fun sendMessage(message: Message, endpointId: String)
     {
         val payload = Payload.fromBytes(SerializationUtils.serialize(message))
@@ -204,17 +225,16 @@ class MainActivity : ConnectionsActivity() {
 
     override fun onReceive(endpoint: Endpoint?, payload: Payload?) {
         val bytes = payload?.asBytes() ?:return
-
         val message = SerializationUtils.deserialize<Message>(bytes)
 
-        if (message.type == MessageType.REQUEST_PERMISSION)
-        {
-            var user = UserInformations("Kurokabe", "Farid", "Abdalla", "farid.abdalla@test.ch")
-            sendMessage(Message(MessageType.USER_INFORMATIONS, user), endpoint!!.id)
-        }
+//        if (message.type == MessageType.REQUEST_PERMISSION)
+//        {
+//            var user = UserInformations("Kurokabe", "Farid", "Abdalla", "farid.abdalla@test.ch")
+//            sendMessage(Message(MessageType.USER_INFORMATIONS, user), endpoint!!.id)
+//        }
 
         for (listener in listeners)
-            listener.messageReceived(message)
+            listener.messageReceived(endpoint, message)
     }
 
 }
