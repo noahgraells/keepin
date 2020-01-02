@@ -14,6 +14,7 @@
     <string name="email">Email</string>
 
     <!--    Keys    -->
+    <string name="saved_contacts_key">contacts</string>
     <string name="saved_informations_key">MyInformations</string>
     <string name="saved_username_key">username</string>
     <string name="endpoint_id_key">endpoint_id</string>

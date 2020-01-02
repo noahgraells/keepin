@@ -2,20 +2,16 @@ package ch.hesso.keepin.fragments
 
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import ch.hesso.keepin.MainActivity
 import ch.hesso.keepin.R
 import ch.hesso.keepin.Utils.ConnectionsActivity
 import ch.hesso.keepin.Utils.MessageReceived
-import ch.hesso.keepin.Utils.Util
 import ch.hesso.keepin.databinding.FragmentSelectedUserBinding
 import ch.hesso.keepin.enums.MessageType
 import ch.hesso.keepin.pojos.Message

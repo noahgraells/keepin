@@ -19,7 +19,7 @@
         app:srcCompat="@drawable/pp_02" />
 
     <TextView
-        android:id="@+id/txv_firstname"
+        android:id="@+id/txv_lastname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -33,6 +33,6 @@
         android:layout_weight="0"
         android:background="@drawable/shape_icon_button"
         android:scaleType="fitXY"
-        android:src="@drawable/ic_ask_24dp"/>
+        android:src="@drawable/ic_profile_24dp"/>
 
 </LinearLayout>

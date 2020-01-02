@@ -6,7 +6,6 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:layout_margin="@dimen/semi_list_padding"
-    android:background="@drawable/shape_card"
     android:gravity="center_vertical">
 
     <ImageView

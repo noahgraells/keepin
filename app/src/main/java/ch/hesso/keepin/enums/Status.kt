@@ -4,5 +4,6 @@ enum class Status {
     CONNECTED,
     ASKED,
     ACCTEPTED,
-    REFUSED
+    REFUSED,
+    INFORMATION
 }
