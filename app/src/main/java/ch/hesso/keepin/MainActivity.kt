@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setTheme(R.style.AppTheme)
+        setTheme(R.style.DarkAppTheme)
         setContentView(R.layout.activity_main)
 
         val bottomNavigationView = findViewById(R.id.bottom_navigation) as BottomNavigationView
