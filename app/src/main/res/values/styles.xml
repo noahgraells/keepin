@@ -12,7 +12,6 @@
         <item name="colorPrimary">@color/white</item>
         <item name="colorPrimaryDark">@color/lightGrey</item>
         <item name="colorMainText">@color/black</item>
-        <item name="colorMainBackground">@color/veryLightGrey</item>
         <item name="android:statusBarColor">@color/white</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>

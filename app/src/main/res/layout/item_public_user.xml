@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
@@ -12,9 +14,10 @@
 
     <ImageView
         android:id="@+id/imv_profile_pic"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_weight="0" />
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_weight="0"
+        app:srcCompat="@drawable/pp_02" />
 
     <TextView
         android:id="@+id/txv_firstname"
@@ -24,7 +27,6 @@
         android:textColor="?attr/colorMainText"
         android:textSize="@dimen/card_title" />
 
-
     <ImageButton
         android:id="@+id/btn_action"
         android:layout_width="35dp"
@@ -32,5 +34,6 @@
         android:layout_weight="0"
         android:background="@drawable/shape_icon_button"
         android:scaleType="fitXY"
-        android:src="@drawable/ic_ask_24dp" />
+        android:src="@drawable/ic_ask_24dp"/>
+
 </LinearLayout>

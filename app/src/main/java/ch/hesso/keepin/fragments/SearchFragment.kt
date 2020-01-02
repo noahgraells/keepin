@@ -5,7 +5,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ch.hesso.keepin.adapters.SearchListAdapter
@@ -13,7 +15,6 @@ import ch.hesso.keepin.enums.Status
 import ch.hesso.keepin.pojos.PublicUser
 import ch.hesso.keepin.R
 import ch.hesso.keepin.Utils.NearbyUsers
-
 
 class SearchFragment : Fragment() {
 
@@ -29,6 +30,8 @@ class SearchFragment : Fragment() {
 //        publicUsers.add(PublicUser("Kevin", Status.ACCTEPTED))
 //        publicUsers.add(PublicUser("Lewis",Status.REFUSED ))
 
+
+        searchList.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
 
         layoutManager = LinearLayoutManager(activity)
         searchList!!.layoutManager = layoutManager
