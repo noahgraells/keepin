@@ -21,6 +21,33 @@ class SearchListAdapter(val items : ArrayList<PublicUser>) : RecyclerView.Adapte
         return items.size
     }
 
+    fun getUser(username: String) : PublicUser?
+    {
+        return items.find { user : PublicUser -> user.name == username }
+    }
+
+    fun addItem(user: PublicUser)
+    {
+        items.add(user)
+        notifyItemInserted(itemCount - 1);
+    }
+
+    fun removeItem(endpointId : String)
+    {
+        for (i in items.indices.reversed()) {
+            if (items[i].endpointId == endpointId)
+            {
+                items.removeAt(i)
+                notifyItemRemoved(i)
+            }
+        }
+    }
+
+    fun contains(endpointId: String) : Boolean
+    {
+        return items.any{x : PublicUser -> x.endpointId == endpointId}
+    }
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val pu = items.get(position)

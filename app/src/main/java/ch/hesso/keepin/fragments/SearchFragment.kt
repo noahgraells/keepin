@@ -14,10 +14,10 @@ import ch.hesso.keepin.adapters.SearchListAdapter
 import ch.hesso.keepin.enums.Status
 import ch.hesso.keepin.pojos.PublicUser
 import ch.hesso.keepin.R
+import ch.hesso.keepin.Utils.NearbyUsers
 
 class SearchFragment : Fragment() {
 
-    var publicUsers = ArrayList<PublicUser>()
     var layoutManager : LinearLayoutManager ?= null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -25,19 +25,21 @@ class SearchFragment : Fragment() {
 
         var searchList = view.findViewById(R.id.search_list) as RecyclerView
 
-        publicUsers.add(PublicUser("Farid", Status.CONNECTED))
-        publicUsers.add(PublicUser("Noah", Status.ASKED))
-        publicUsers.add(PublicUser("Kevin", Status.ACCTEPTED))
-        publicUsers.add(PublicUser("Lewis",Status.REFUSED ))
+//        publicUsers.add(PublicUser("Farid", Status.CONNECTED))
+//        publicUsers.add(PublicUser("Noah", Status.ASKED))
+//        publicUsers.add(PublicUser("Kevin", Status.ACCTEPTED))
+//        publicUsers.add(PublicUser("Lewis",Status.REFUSED ))
 
 
         searchList.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
 
         layoutManager = LinearLayoutManager(activity)
         searchList!!.layoutManager = layoutManager
-        searchList.adapter = SearchListAdapter(publicUsers)
+        searchList.adapter = NearbyUsers.userList
 
-        Log.i("Debug", publicUsers.size.toString())
+
+
+//        Log.i("Debug", publicUsers.size.toString())
 
         return view
     }
