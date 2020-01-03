@@ -1,25 +1,28 @@
 package ch.hesso.keepin.fragments
 
 
+import android.opengl.Visibility
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import ch.hesso.keepin.MainActivity
 import ch.hesso.keepin.R
 import ch.hesso.keepin.Utils.ConnectionsActivity
 import ch.hesso.keepin.Utils.MessageReceived
-import ch.hesso.keepin.Utils.Util
+import ch.hesso.keepin.Utils.NearbyUsers
 import ch.hesso.keepin.databinding.FragmentSelectedUserBinding
 import ch.hesso.keepin.enums.MessageType
 import ch.hesso.keepin.pojos.Message
 import ch.hesso.keepin.pojos.UserInformations
+import androidx.core.app.ActivityCompat.startActivityForResult
+import android.provider.ContactsContract
+import android.content.Intent
+
+
 
 
 /**
@@ -28,6 +31,8 @@ import ch.hesso.keepin.pojos.UserInformations
 class SelectedUserFragment : Fragment(), MessageReceived {
 
     var userInfo = UserInformations()
+    var btnRequestInformations : Button? = null
+    var btnSaveContact : Button? = null
 
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle? ): View? {
         // Inflate the layout for this fragment
@@ -41,11 +46,44 @@ class SelectedUserFragment : Fragment(), MessageReceived {
         val args = arguments
         val endpointId = args!!.getString(getString(R.string.endpoint_id_key), "")
 
-        val btnRequestInformation = view.findViewById<Button>(R.id.btnRequestInformation)
-        btnRequestInformation!!.setOnClickListener{_ -> (activity as MainActivity).sendMessage(
-            Message(MessageType.REQUEST_PERMISSION, null), endpointId)}
+        btnSaveContact = view.findViewById<Button>(R.id.btnSaveContact)
+        btnSaveContact!!.setOnClickListener{ saveContact() }
 
+
+        btnRequestInformations = view.findViewById<Button>(R.id.btnRequestInformation)
+
+        if (!endpointId.isNullOrBlank())
+        {
+            btnRequestInformations!!.setOnClickListener{_ -> (activity as MainActivity).sendMessage(
+                Message(MessageType.REQUEST_PERMISSION, null), endpointId)}
+        }
+        else
+        {
+            val firstname = args!!.getString(getString(R.string.firstname_key), "")
+            val lastname = args!!.getString(getString(R.string.lastname_key), "")
+
+            fillUser(firstname, lastname)
+        }
         return view
+    }
+
+    private fun saveContact()
+    {
+        val contactIntent = Intent(ContactsContract.Intents.Insert.ACTION)
+        contactIntent.type = ContactsContract.RawContacts.CONTENT_TYPE
+
+        contactIntent
+            .putExtra(ContactsContract.Intents.Insert.NAME, userInfo.firstName + " " + userInfo.lastName)
+            .putExtra(ContactsContract.Intents.Insert.EMAIL, userInfo.email)
+
+        startActivityForResult(contactIntent, 1)
+    }
+
+    private fun fillUser(firstname: String, lastname: String)
+    {
+        var user = NearbyUsers.contacts.find { u -> u.firstName == firstname && u.lastName == lastname } ?: return
+
+        fillUserInformations(user)
     }
 
     override fun messageReceived(endpoint: ConnectionsActivity.Endpoint?, message: Message) {
@@ -57,9 +95,11 @@ class SelectedUserFragment : Fragment(), MessageReceived {
         }
     }
 
-    fun fillUserInformations(userInformations: UserInformations)
+    private fun fillUserInformations(userInformations: UserInformations)
     {
         userInfo.copyFrom(userInformations)
+        btnRequestInformations!!.visibility = View.GONE
+        btnSaveContact!!.visibility = View.VISIBLE
     }
 
 

@@ -14,9 +14,12 @@
     <string name="email">Email</string>
 
     <!--    Keys    -->
+    <string name="saved_contacts_key">contacts</string>
     <string name="saved_informations_key">MyInformations</string>
     <string name="saved_username_key">username</string>
     <string name="endpoint_id_key">endpoint_id</string>
+    <string name="firstname_key">firstname</string>
+    <string name="lastname_key">lastname</string>
 
     <!--    Message sent with Nearby    -->
     <string name="message_ask_for_permission">permissionsAsked</string>
@@ -28,4 +31,5 @@
     <string name="toast_disconnected">Disconnected from %s</string>
     <string name="firstName">First name</string>
     <string name="lastName">Last name</string>
+    <string name="save_contact">Save Contact</string>
 </resources>

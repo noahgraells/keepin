@@ -6,4 +6,11 @@
     tools:context=".fragments.ContactsFragment"
     android:background="@color/lightBlue">
 
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/contact_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/semi_list_padding"/>
+
 </FrameLayout>

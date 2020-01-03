@@ -2,6 +2,7 @@ package ch.hesso.keepin
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
@@ -25,6 +26,8 @@ import ch.hesso.keepin.pojos.Message
 import ch.hesso.keepin.pojos.UserInformations
 import org.apache.commons.lang3.SerializationUtils
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import kotlinx.android.synthetic.main.fragment_contacts.*
 
 
 class MainActivity : ConnectionsActivity() {
@@ -48,6 +51,7 @@ class MainActivity : ConnectionsActivity() {
         setContentView(R.layout.activity_main)
 
         loadUserInformations()
+        loadContacts()
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
@@ -70,6 +74,30 @@ class MainActivity : ConnectionsActivity() {
         myUserInformations = obj
     }
 
+    fun loadContacts()
+    {
+        val mPrefs = getPreferences(Context.MODE_PRIVATE)
+        val gson = Gson()
+        val json = mPrefs.getString(getString(R.string.saved_contacts_key), "")
+
+        val type = object : TypeToken<ArrayList<UserInformations>>() {}.type
+
+        val obj = gson.fromJson<ArrayList<UserInformations>>(json, type) ?: return
+        NearbyUsers.contacts = obj
+
+        Log.d("Keepin","LENGTH : " + NearbyUsers.contacts.size + " ::: " + json)
+    }
+
+    fun saveContacts()
+    {
+        val sharedPref = getPreferences(Context.MODE_PRIVATE) ?: return
+        val prefsEditor = sharedPref.edit()
+        val gson = Gson()
+        val json = gson.toJson(NearbyUsers.contacts)
+        prefsEditor.putString(getString(R.string.saved_contacts_key), json)
+        prefsEditor.commit()
+    }
+
     override fun onStart() {
         super.onStart()
 
@@ -82,6 +110,11 @@ class MainActivity : ConnectionsActivity() {
 
         stopDiscovering()
         stopAdvertising()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        saveContacts()
     }
 
     fun bottomNavigationItemSelected(item : MenuItem) : Boolean {
@@ -188,6 +221,23 @@ class MainActivity : ConnectionsActivity() {
         supportFragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit()
     }
 
+    fun contactSelected(view: View)
+    {
+        val vwParentRow = view as LinearLayout
+        val image = vwParentRow.getChildAt(0) as ImageView
+        val firstName = (vwParentRow.getChildAt(1) as TextView).text.toString()
+        val lastName = (vwParentRow.getChildAt(2) as TextView).text.toString()
+
+
+        var fragment : Fragment? = SelectedUserFragment()
+        val args = Bundle()
+        args.putString(getString(R.string.firstname_key), firstName)
+        args.putString(getString(R.string.lastname_key), lastName)
+        fragment!!.arguments = args
+
+        supportFragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit()
+    }
+
     fun requestAccept(view : View)
     {
         val vwParentRow = view.parent as LinearLayout
@@ -227,14 +277,22 @@ class MainActivity : ConnectionsActivity() {
         val bytes = payload?.asBytes() ?:return
         val message = SerializationUtils.deserialize<Message>(bytes)
 
-//        if (message.type == MessageType.REQUEST_PERMISSION)
-//        {
-//            var user = UserInformations("Kurokabe", "Farid", "Abdalla", "farid.abdalla@test.ch")
-//            sendMessage(Message(MessageType.USER_INFORMATIONS, user), endpoint!!.id)
-//        }
+        if (message.type == MessageType.USER_INFORMATIONS)
+        {
+            var userInformations = message.content as UserInformations
+            addContact(userInformations)
+        }
 
         for (listener in listeners)
             listener.messageReceived(endpoint, message)
+    }
+
+    private fun addContact(userInformations: UserInformations)
+    {
+        if (!NearbyUsers.contacts.any{ u -> u.firstName == userInformations.firstName && u.lastName == userInformations.lastName})
+        {
+            NearbyUsers.contacts.add(userInformations)
+        }
     }
 
 }

@@ -1,8 +1,10 @@
 package ch.hesso.keepin.Utils
 
+import ch.hesso.keepin.adapters.ContactListAdapter
 import ch.hesso.keepin.adapters.NotificationListAdapter
 import ch.hesso.keepin.adapters.SearchListAdapter
 import ch.hesso.keepin.pojos.PublicUser
+import ch.hesso.keepin.pojos.UserInformations
 
 class NearbyUsers {
 
@@ -11,5 +13,7 @@ class NearbyUsers {
         var notificationUsers = ArrayList<PublicUser>()
         var userList = SearchListAdapter(publicUsers)
         var notificationList = NotificationListAdapter(notificationUsers)
+
+        var contacts = ArrayList<UserInformations>()
     }
 }
