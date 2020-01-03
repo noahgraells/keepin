@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ch.hesso.keepin.R
+import ch.hesso.keepin.Utils.NearbyUsers
 import ch.hesso.keepin.enums.Status
 import ch.hesso.keepin.pojos.PublicUser
 import kotlinx.android.synthetic.main.fragment_selected_user.view.*
@@ -34,6 +35,11 @@ class NotificationListAdapter(val items : ArrayList<PublicUser>) : RecyclerView.
             items.add(user)
             notifyItemInserted(itemCount - 1)
         }
+
+        if (NearbyUsers.notifTab != null)
+        {
+            NearbyUsers.notifTab!!.showBadge().number = itemCount
+        }
     }
 
     fun removeItem(endpointId : String)
@@ -43,6 +49,15 @@ class NotificationListAdapter(val items : ArrayList<PublicUser>) : RecyclerView.
             {
                 items.removeAt(i)
                 notifyItemRemoved(i)
+            }
+        }
+
+        if (NearbyUsers.notifTab != null)
+        {
+            NearbyUsers.notifTab!!.showBadge().number = itemCount
+            if (itemCount == 0)
+            {
+                NearbyUsers.notifTab!!.removeBadge()
             }
         }
     }

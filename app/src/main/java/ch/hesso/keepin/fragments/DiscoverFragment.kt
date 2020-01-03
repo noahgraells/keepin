@@ -6,11 +6,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.get
 import androidx.viewpager.widget.ViewPager
 import ch.hesso.keepin.R
+import ch.hesso.keepin.Utils.NearbyUsers
 import ch.hesso.keepin.adapters.DiscoverPagerAdapter
 import ch.hesso.keepin.pojos.PublicUser
+import com.google.android.material.tabs.TabItem
 import com.google.android.material.tabs.TabLayout
+
+
 
 class DiscoverFragment : Fragment() {
 
@@ -21,12 +26,12 @@ class DiscoverFragment : Fragment() {
 
         // Setting ViewPager for each Tabs
         val viewPager = view.findViewById<View>(R.id.viewpager) as ViewPager
-        val tabs = view.findViewById<View>(R.id.result_tabs) as TabLayout
+        var tabs = view.findViewById<View>(R.id.result_tabs) as TabLayout
 
         setupViewPager(viewPager)
         tabs.setupWithViewPager(viewPager)
 
-
+        NearbyUsers.notifTab = tabs.getTabAt(1)
 
         return view;
     }

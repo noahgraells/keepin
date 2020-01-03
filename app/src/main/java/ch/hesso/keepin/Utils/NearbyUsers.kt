@@ -5,6 +5,9 @@ import ch.hesso.keepin.adapters.NotificationListAdapter
 import ch.hesso.keepin.adapters.SearchListAdapter
 import ch.hesso.keepin.pojos.PublicUser
 import ch.hesso.keepin.pojos.UserInformations
+import com.google.android.material.badge.BadgeDrawable
+import com.google.android.material.tabs.TabItem
+import com.google.android.material.tabs.TabLayout
 
 class NearbyUsers {
 
@@ -15,5 +18,7 @@ class NearbyUsers {
         var notificationList = NotificationListAdapter(notificationUsers)
 
         var contacts = ArrayList<UserInformations>()
+
+        var notifTab: TabLayout.Tab? = null
     }
 }
