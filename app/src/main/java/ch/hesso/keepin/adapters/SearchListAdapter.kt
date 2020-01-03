@@ -26,6 +26,11 @@ class SearchListAdapter(val items : ArrayList<PublicUser>) : RecyclerView.Adapte
         return items.find { user : PublicUser -> user.name == username }
     }
 
+    fun getUserWithEndpointId(endpointId: String) : PublicUser?
+    {
+        return items.find { user : PublicUser -> user.endpointId == endpointId }
+    }
+
     fun addItem(user: PublicUser)
     {
         items.add(user)
@@ -41,6 +46,12 @@ class SearchListAdapter(val items : ArrayList<PublicUser>) : RecyclerView.Adapte
                 notifyItemRemoved(i)
             }
         }
+    }
+
+    fun modifyStatus(user: PublicUser?, status: Status)
+    {
+        user?.status = status
+        notifyItemChanged(items.indexOf(user))
     }
 
     fun contains(endpointId: String) : Boolean
@@ -59,7 +70,6 @@ class SearchListAdapter(val items : ArrayList<PublicUser>) : RecyclerView.Adapte
             Status.ASKED -> holder.actionButton.setImageResource(R.drawable.ic_wait_24dp)
             Status.ACCTEPTED -> holder.actionButton.setImageResource(R.drawable.ic_valid_24dp)
             Status.REFUSED -> holder.actionButton.setImageResource(R.drawable.ic_refuse_24dp)
-            Status.REFUSED -> holder.actionButton.setImageResource(R.drawable.ic_profile_24dp)
         }
 
 

@@ -214,17 +214,34 @@ class MainActivity : ConnectionsActivity() {
     fun userSelected(view : View)
     {
         val vwParentRow = view as LinearLayout
-        val child = vwParentRow.getChildAt(1) as TextView
+        val firstname = (vwParentRow.getChildAt(1) as TextView).text.toString()
         val btnChild = vwParentRow.getChildAt(2) as ImageButton
 
-        val endpointId = NearbyUsers.userList.getUser(child.text.toString())?.endpointId
+        var clickedUser = NearbyUsers.userList.getUser(firstname)
 
-        var fragment : Fragment? = SelectedUserFragment()
-        val args = Bundle()
-        args.putString(getString(R.string.endpoint_id_key), endpointId)
-        fragment!!.arguments = args
+        val endpointId = clickedUser?.endpointId
 
-        supportFragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit()
+//        var fragment : Fragment? = SelectedUserFragment()
+//        val args = Bundle()
+//        args.putString(getString(R.string.endpoint_id_key), endpointId)
+//        fragment!!.arguments = args
+//
+//        supportFragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit()
+        if (clickedUser?.status == Status.CONNECTED)
+        {
+            sendMessage(Message(MessageType.REQUEST_PERMISSION, null), endpointId.orEmpty())
+            NearbyUsers.userList.modifyStatus(clickedUser, Status.ASKED)
+        } else if (clickedUser?.status == Status.ACCTEPTED)
+        {
+            val lastname = NearbyUsers.contacts.find { u -> u.firstName == firstname }?.lastName
+            var fragment : Fragment? = SelectedUserFragment()
+            val args = Bundle()
+            args.putString(getString(R.string.firstname_key), firstname)
+            args.putString(getString(R.string.lastname_key), lastname)
+            fragment!!.arguments = args
+
+            supportFragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit()
+        }
     }
 
     fun contactSelected(view: View)
@@ -263,6 +280,8 @@ class MainActivity : ConnectionsActivity() {
         val firstName = vwParentRow.getChildAt(1) as TextView
         val endpointId = (vwParentRow.getChildAt(2) as TextView).text.toString()
 
+        sendMessage(Message(MessageType.PERMISSION_REFUSED, myUserInformations), endpointId)
+
         removeNotification(endpointId)
     }
 
@@ -287,6 +306,11 @@ class MainActivity : ConnectionsActivity() {
         {
             var userInformations = message.content as UserInformations
             addContact(userInformations)
+            NearbyUsers.userList.modifyStatus(NearbyUsers.userList.getUser(userInformations.firstName), Status.ACCTEPTED)
+        }
+        else if (message.type == MessageType.PERMISSION_REFUSED)
+        {
+            NearbyUsers.userList.modifyStatus(NearbyUsers.userList.getUserWithEndpointId(endpoint!!.id), Status.CONNECTED)
         }
 
         for (listener in listeners)
