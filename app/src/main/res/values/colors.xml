@@ -10,7 +10,7 @@
     <color name="veryDarkGrey">#232930</color>
     <color name="lightGrey">#CCCCCC</color>
     <color name="veryLightGrey">#EFEFEF</color>
-
+    <color name="grey">#5e656e</color>
 
     <color name="lightRed">#FFAAAA</color>
     <color name="lightGreen">#AAFFAA</color>

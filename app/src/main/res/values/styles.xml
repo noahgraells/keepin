@@ -1,9 +1,10 @@
 <resources>
 
-    <style name="BaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="BaseTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorAccent">@color/green</item>
         <item name="colorDisableText">@color/lightGrey</item>
         <item name="android:fontFamily">@font/heebo</item>
+        <item name="colorHintText">@color/grey</item>
     </style>
 
     <!-- Base application theme. -->
@@ -21,7 +22,6 @@
         <item name="colorPrimary">@color/darkGrey</item>
         <item name="colorPrimaryDark">@color/black</item>
         <item name="colorMainText">@color/white</item>
-        <item name="colorMainBackground">@color/veryDarkGrey</item>
         <item name="android:statusBarColor">@color/darkGrey</item>
         <item name="android:windowLightStatusBar">false</item>
     </style>

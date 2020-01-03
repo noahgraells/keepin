@@ -12,6 +12,7 @@
 
     <string name="request_information">Request information</string>
     <string name="email">Email</string>
+    <string name="phoneNumber">Phone number</string>
 
     <!--    Keys    -->
     <string name="saved_contacts_key">contacts</string>
@@ -32,4 +33,12 @@
     <string name="firstName">First name</string>
     <string name="lastName">Last name</string>
     <string name="save_contact">Save Contact</string>
+
+    <!--   Social medias -->
+
+    <string name="facebook">Facebook</string>
+    <string name="instagram">Instagram</string>
+    <string name="twitter">Twitter</string>
+    <string name="linkedin">Linked In</string>
+
 </resources>

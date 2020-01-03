@@ -4,5 +4,6 @@
         <attr name="colorMainText" format="color"/>
         <attr name="colorDisableText" format="color"/>
         <attr name="colorMainBackground" format="color"/>
+        <attr name="colorHintText" format="color"/>
     </declare-styleable>
 </resources>

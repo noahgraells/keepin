@@ -34,8 +34,9 @@ class MainActivity : ConnectionsActivity() {
 
     var myUserInformations : UserInformations = UserInformations()
 
-    private val STRATEGY = Strategy.P2P_CLUSTER
+    private var txvToolbar : TextView ?= null
 
+    private val STRATEGY = Strategy.P2P_CLUSTER
     private var SERVICE_ID = ""
 
     private val listeners = ArrayList<MessageReceived>()
@@ -55,6 +56,8 @@ class MainActivity : ConnectionsActivity() {
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
+
+        txvToolbar = findViewById(R.id.toolbarTextView)
 
         toolbar.title = ""
         setSupportActionBar(toolbar)
@@ -126,12 +129,15 @@ class MainActivity : ConnectionsActivity() {
 
             R.id.navigation_profile -> {
                 selectedFragment = ProfileFragment()
+                txvToolbar?.text = getString(R.string.title_profile)
             }
             R.id.navigation_contacts -> {
                 selectedFragment = ContactsFragment()
+                txvToolbar?.text = getString(R.string.title_contacts)
             }
             else ->  {
                 selectedFragment = DiscoverFragment()
+                txvToolbar?.text = getString(R.string.app_name)
                 elevation = 0f
             }
         }
