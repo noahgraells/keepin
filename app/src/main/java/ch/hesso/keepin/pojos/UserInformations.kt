@@ -12,8 +12,7 @@ import kotlin.reflect.full.memberProperties
 data class UserInformations(private var _userName: String = "",
                             private var _firstName: String = "",
                             private var _lastName : String = "",
-                            private var _email : String = "",
-                            private var _canSendRequest : Boolean = true): BaseObservable(),  Serializable
+                            private var _email : String = ""): BaseObservable(),  Serializable
 {
 
     var userName: String
@@ -44,19 +43,11 @@ data class UserInformations(private var _userName: String = "",
             notifyPropertyChanged(BR.email)
         }
 
-    var canSendRequest: Boolean
-        @Bindable get() = _canSendRequest
-        set(value) {
-            _canSendRequest = value
-            notifyPropertyChanged(BR.canSendRequest)
-        }
-
     fun copyFrom(userInformations: UserInformations)
     {
         this.userName = userInformations.userName
         this.firstName = userInformations.firstName
         this.lastName = userInformations.lastName
         this.email = userInformations.email
-        this.canSendRequest = userInformations.canSendRequest
     }
 }
