@@ -262,7 +262,7 @@ class MainActivity : ConnectionsActivity() {
     fun userSelected(view : View)
     {
         val vwParentRow = view as LinearLayout
-        val firstname = (vwParentRow.getChildAt(1) as TextView).text.toString()
+        val firstname = (vwParentRow.getChildAt(0) as TextView).text.toString()
 
         var clickedUser = NearbyUsers.userList.getUser(firstname)
 
@@ -288,7 +288,9 @@ class MainActivity : ConnectionsActivity() {
     {
         val vwParentRow = view as LinearLayout
         val firstName = (vwParentRow.getChildAt(1) as TextView).text.toString()
-        val lastName = (vwParentRow.getChildAt(2) as TextView).text.toString()
+//        val lastName = (vwParentRow.getChildAt(2) as TextView).text.toString()
+
+        val lastName = NearbyUsers.contacts.find { u -> u.firstName == firstName }?.lastName
 
         displayContact(firstName, lastName)
 
@@ -315,7 +317,7 @@ class MainActivity : ConnectionsActivity() {
     fun requestAccept(view : View)
     {
         val vwParentRow = view.parent as LinearLayout
-        val endpointId = (vwParentRow.getChildAt(2) as TextView).text.toString()
+        val endpointId = (vwParentRow.getChildAt(1) as TextView).text.toString()
 
         sendMessage(Message(MessageType.USER_INFORMATIONS, myUserInformations), endpointId)
 
@@ -328,7 +330,7 @@ class MainActivity : ConnectionsActivity() {
     fun requestRefuse(view : View)
     {
         val vwParentRow = view.parent as LinearLayout
-        val endpointId = (vwParentRow.getChildAt(2) as TextView).text.toString()
+        val endpointId = (vwParentRow.getChildAt(1) as TextView).text.toString()
 
         sendMessage(Message(MessageType.PERMISSION_REFUSED, myUserInformations), endpointId)
 

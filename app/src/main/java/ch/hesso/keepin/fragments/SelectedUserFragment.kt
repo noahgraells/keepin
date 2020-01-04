@@ -19,6 +19,7 @@ import ch.hesso.keepin.pojos.Message
 import ch.hesso.keepin.pojos.UserInformations
 import android.provider.ContactsContract
 import android.content.Intent
+import android.widget.ImageButton
 
 /**
  * A simple [Fragment] subclass.
@@ -26,8 +27,7 @@ import android.content.Intent
 class SelectedUserFragment : Fragment(), MessageReceived {
 
     private var userInfo = UserInformations()
-    private var btnRequestInformations : Button? = null
-    var btnSaveContact : Button? = null
+    var btnSaveContact : ImageButton? = null
 
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle? ): View? {
         // Inflate the layout for this fragment
@@ -39,23 +39,14 @@ class SelectedUserFragment : Fragment(), MessageReceived {
         binding!!.user = userInfo
 
         val args = arguments
-        val endpointId = args!!.getString(getString(R.string.endpoint_id_key), "")
 
-        btnSaveContact = view.findViewById<Button>(R.id.btnSaveContact)
+        btnSaveContact = view.findViewById(R.id.btnSaveContact)
         btnSaveContact!!.setOnClickListener{ saveContact() }
 
-        if (!endpointId.isNullOrBlank())
-        {
-            btnRequestInformations!!.setOnClickListener{_ -> (activity as MainActivity).sendMessage(
-                Message(MessageType.REQUEST_PERMISSION, null), endpointId)}
-        }
-        else
-        {
-            val firstname = args!!.getString(getString(R.string.firstname_key), "")
-            val lastname = args!!.getString(getString(R.string.lastname_key), "")
+        val firstname = args!!.getString(getString(R.string.firstname_key), "")
+        val lastname = args!!.getString(getString(R.string.lastname_key), "")
 
-            fillUser(firstname, lastname)
-        }
+        fillUser(firstname, lastname)
         return view
     }
 
@@ -102,7 +93,6 @@ class SelectedUserFragment : Fragment(), MessageReceived {
     private fun fillUserInformations(userInformations: UserInformations)
     {
         userInfo.copyFrom(userInformations)
-        btnRequestInformations!!.visibility = View.GONE
         btnSaveContact!!.visibility = View.VISIBLE
     }
 
