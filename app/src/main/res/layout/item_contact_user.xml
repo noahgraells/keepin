@@ -6,34 +6,34 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:layout_margin="@dimen/semi_list_padding"
+    android:layout_margin="@dimen/list_padding"
     android:gravity="center_vertical"
     android:onClick="contactSelected"
     >
 
+    <!--
     <ImageView
         android:id="@+id/imv_profile_pic"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_weight="0"
-        app:srcCompat="@drawable/pp_02" />
-
+        app:srcCompat="@drawable/pp_02" />-->
 
     <TextView
-        android:id="@+id/txv_contact_firstname"
+        android:id="@+id/txv_contact_fullname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:textColor="?attr/colorMainText"
-        android:textSize="@dimen/card_title" />
+        android:textSize="@dimen/list_text_size" />
 
-    <TextView
+    <!--<TextView
         android:id="@+id/txv_contact_lastname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:textColor="?attr/colorMainText"
-        android:textSize="@dimen/card_title" />
+        android:textSize="@dimen/list_text_size" />-->
 
     <ImageButton
         android:id="@+id/btn_action"

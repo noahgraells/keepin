@@ -20,6 +20,7 @@
             android:background="?attr/colorPrimary"
             android:elevation="4dp"
             app:tabTextColor="?attr/colorDisableText"
+            app:tabIndicatorColor="?attr/colorAccent"
             app:tabSelectedTextColor="?attr/colorMainText" >
 
             <com.google.android.material.tabs.TabItem

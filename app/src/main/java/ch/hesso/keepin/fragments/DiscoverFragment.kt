@@ -40,25 +40,4 @@ class DiscoverFragment : Fragment() {
         adapter.addFragment(NotificationFragment(), "NOTIF.")
         viewPager.adapter = adapter
     }
-
-    override fun onStart() {
-        super.onStart()
-        Log.v("Debug", "Discover - onStart");
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.v("Debug", "Discover - onPause");
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.v("Debug", "Discover - onResume");
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.v("Debug", "Discover - onDestroy");
-    }
-
 }
