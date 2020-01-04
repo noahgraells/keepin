@@ -41,13 +41,13 @@ class ContactListAdapter(val items : ArrayList<PublicUser>) : RecyclerView.Adapt
 
         val pu = items.get(position)
 
-        holder.firstname?.text = pu.name
-        holder.lastname?.text = pu.lastName
+        holder.fullname?.text = pu.name + " " + pu.lastName
+        //holder.lastname?.text = pu.lastName
     }
 }
 
 class ContactViewHolder (view: View) : RecyclerView.ViewHolder(view) {
-    val firstname = view.txv_contact_firstname
+    val fullname = view.txv_contact_fullname
     val actionButton = view.btn_action
-    val lastname = view.txv_contact_lastname
+    //val lastname = view.txv_contact_lastname
 }
