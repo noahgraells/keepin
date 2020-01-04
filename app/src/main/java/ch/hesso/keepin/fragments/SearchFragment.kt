@@ -5,17 +5,16 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import ch.hesso.keepin.adapters.SearchListAdapter
-import ch.hesso.keepin.enums.Status
-import ch.hesso.keepin.pojos.PublicUser
 import ch.hesso.keepin.R
-import ch.hesso.keepin.Utils.NearbyUsers
+import ch.hesso.keepin.utils.NearbyUsers
 
+/**
+ * Fragment used to display nearby users
+ */
 class SearchFragment : Fragment() {
 
     var layoutManager : LinearLayoutManager ?= null

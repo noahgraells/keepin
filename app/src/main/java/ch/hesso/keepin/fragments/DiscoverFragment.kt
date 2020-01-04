@@ -6,20 +6,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.get
 import androidx.viewpager.widget.ViewPager
 import ch.hesso.keepin.R
-import ch.hesso.keepin.Utils.NearbyUsers
+import ch.hesso.keepin.utils.NearbyUsers
 import ch.hesso.keepin.adapters.DiscoverPagerAdapter
 import ch.hesso.keepin.pojos.PublicUser
-import com.google.android.material.tabs.TabItem
 import com.google.android.material.tabs.TabLayout
 
 
-
+/**
+ * Fragment used to hold the two fragments (search and notification)
+ */
 class DiscoverFragment : Fragment() {
-
-    val animals: ArrayList<PublicUser> = ArrayList()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_discover, container, false)

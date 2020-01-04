@@ -8,17 +8,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import ch.hesso.keepin.MainActivity
 
 import ch.hesso.keepin.R
-import ch.hesso.keepin.Utils.NearbyUsers
+import ch.hesso.keepin.utils.NearbyUsers
 import ch.hesso.keepin.adapters.ContactListAdapter
 import ch.hesso.keepin.enums.Status
 import ch.hesso.keepin.pojos.PublicUser
 
+/**
+ * Fragment used to display the contacts
+ */
 class ContactsFragment : Fragment() {
-
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_contacts, container, false)

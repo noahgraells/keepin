@@ -1,4 +1,4 @@
-package ch.hesso.keepin.Utils;
+package ch.hesso.keepin.utils;
 
 import android.Manifest;
 import android.content.Context;
@@ -42,7 +42,7 @@ import java.util.Set;
 
 import ch.hesso.keepin.R;
 
-import static ch.hesso.keepin.Utils.Constants.TAG;
+import static ch.hesso.keepin.utils.Constants.TAG;
 
 
 /** A class that connects to Nearby Connections and provides convenience methods and callbacks. */

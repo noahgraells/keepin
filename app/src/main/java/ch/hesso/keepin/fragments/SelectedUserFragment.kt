@@ -1,7 +1,6 @@
 package ch.hesso.keepin.fragments
 
 
-import android.opengl.Visibility
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,14 +10,13 @@ import android.widget.Button
 import androidx.databinding.DataBindingUtil
 import ch.hesso.keepin.MainActivity
 import ch.hesso.keepin.R
-import ch.hesso.keepin.Utils.ConnectionsActivity
-import ch.hesso.keepin.Utils.MessageReceived
-import ch.hesso.keepin.Utils.NearbyUsers
+import ch.hesso.keepin.utils.ConnectionsActivity
+import ch.hesso.keepin.utils.MessageReceived
+import ch.hesso.keepin.utils.NearbyUsers
 import ch.hesso.keepin.databinding.FragmentSelectedUserBinding
 import ch.hesso.keepin.enums.MessageType
 import ch.hesso.keepin.pojos.Message
 import ch.hesso.keepin.pojos.UserInformations
-import androidx.core.app.ActivityCompat.startActivityForResult
 import android.provider.ContactsContract
 import android.content.Intent
 
@@ -30,8 +28,8 @@ import android.content.Intent
  */
 class SelectedUserFragment : Fragment(), MessageReceived {
 
-    var userInfo = UserInformations()
-    var btnRequestInformations : Button? = null
+    private var userInfo = UserInformations()
+    private var btnRequestInformations : Button? = null
     var btnSaveContact : Button? = null
 
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle? ): View? {
@@ -67,6 +65,9 @@ class SelectedUserFragment : Fragment(), MessageReceived {
         return view
     }
 
+    /**
+     * Enable the user to save the informations inside his phone as a contact
+     */
     private fun saveContact()
     {
         val contactIntent = Intent(ContactsContract.Intents.Insert.ACTION)
@@ -79,6 +80,9 @@ class SelectedUserFragment : Fragment(), MessageReceived {
         startActivityForResult(contactIntent, 1)
     }
 
+    /**
+     * Fill the informations about the specified user
+     */
     private fun fillUser(firstname: String, lastname: String)
     {
         var user = NearbyUsers.contacts.find { u -> u.firstName == firstname && u.lastName == lastname } ?: return
@@ -86,6 +90,9 @@ class SelectedUserFragment : Fragment(), MessageReceived {
         fillUserInformations(user)
     }
 
+    /**
+     * When we receive the user information, fill the fields accordingly
+     */
     override fun messageReceived(endpoint: ConnectionsActivity.Endpoint?, message: Message) {
         when (message.type)
         {
@@ -95,6 +102,9 @@ class SelectedUserFragment : Fragment(), MessageReceived {
         }
     }
 
+    /**
+     * Fill the fields with the user information in parameter
+     */
     private fun fillUserInformations(userInformations: UserInformations)
     {
         userInfo.copyFrom(userInformations)

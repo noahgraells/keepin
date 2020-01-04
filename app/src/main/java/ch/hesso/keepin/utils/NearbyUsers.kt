@@ -1,14 +1,14 @@
-package ch.hesso.keepin.Utils
+package ch.hesso.keepin.utils
 
-import ch.hesso.keepin.adapters.ContactListAdapter
 import ch.hesso.keepin.adapters.NotificationListAdapter
 import ch.hesso.keepin.adapters.SearchListAdapter
 import ch.hesso.keepin.pojos.PublicUser
 import ch.hesso.keepin.pojos.UserInformations
-import com.google.android.material.badge.BadgeDrawable
-import com.google.android.material.tabs.TabItem
 import com.google.android.material.tabs.TabLayout
 
+/**
+ * Static class holding informations that are shared across the fragments / activity
+ */
 class NearbyUsers {
 
     companion object {

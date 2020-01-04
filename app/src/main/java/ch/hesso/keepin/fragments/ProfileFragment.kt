@@ -17,10 +17,12 @@ import ch.hesso.keepin.pojos.UserInformations
 import com.google.gson.Gson
 
 
-
+/**
+ * Fragment used to enter the personal informations
+ */
 class ProfileFragment : Fragment() {
 
-    var userInfo : UserInformations? = null
+    private var userInfo : UserInformations? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
@@ -34,7 +36,10 @@ class ProfileFragment : Fragment() {
         return view
     }
 
-    fun saveProfileData()
+    /**
+     * Save the profile of the user inside the shared preferences
+     */
+    private fun saveProfileData()
     {
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
         val prefsEditor = sharedPref.edit()

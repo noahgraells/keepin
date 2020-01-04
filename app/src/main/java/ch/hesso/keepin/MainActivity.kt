@@ -2,15 +2,14 @@ package ch.hesso.keepin
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
-import ch.hesso.keepin.Utils.ConnectionsActivity
-import ch.hesso.keepin.Utils.MessageReceived
-import ch.hesso.keepin.Utils.NearbyUsers
+import ch.hesso.keepin.utils.ConnectionsActivity
+import ch.hesso.keepin.utils.MessageReceived
+import ch.hesso.keepin.utils.NearbyUsers
 import ch.hesso.keepin.enums.Status
 import ch.hesso.keepin.fragments.ContactsFragment
 import ch.hesso.keepin.fragments.DiscoverFragment
@@ -27,12 +26,12 @@ import ch.hesso.keepin.pojos.UserInformations
 import org.apache.commons.lang3.SerializationUtils
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import kotlinx.android.synthetic.main.fragment_contacts.*
 
 
 class MainActivity : ConnectionsActivity() {
 
     var myUserInformations : UserInformations = UserInformations()
+    private var profileCreated : Boolean = false
 
     private var txvToolbar : TextView ?= null
 
@@ -41,10 +40,12 @@ class MainActivity : ConnectionsActivity() {
 
     private val listeners = ArrayList<MessageReceived>()
 
+    /**
+     * Add a listener to the list to be notified of a message received
+     */
     fun addListener(toAdd: MessageReceived) {
         listeners.add(toAdd)
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,21 +64,37 @@ class MainActivity : ConnectionsActivity() {
         setSupportActionBar(toolbar)
 
         bottomNavigationView.setOnNavigationItemSelectedListener { item -> bottomNavigationItemSelected(item)}
-        bottomNavigationView.selectedItemId = R.id.navigation_profile
+
+        if (profileCreated)
+        {
+            bottomNavigationView.selectedItemId = R.id.navigation_discover
+        }
+        else
+        {
+            bottomNavigationView.selectedItemId = R.id.navigation_profile
+        }
+
 
         SERVICE_ID = packageName
     }
 
-    fun loadUserInformations()
+    /**
+     * Load the user informations that have been saved on the phone
+     */
+    private fun loadUserInformations()
     {
         val mPrefs = getPreferences(Context.MODE_PRIVATE)
         val gson = Gson()
         val json = mPrefs.getString(getString(R.string.saved_informations_key), "")
         val obj = gson.fromJson(json, UserInformations::class.java)?: return
         myUserInformations = obj
+        profileCreated = true
     }
 
-    fun loadContacts()
+    /**
+     * Load the previously accepted contacts
+     */
+    private fun loadContacts()
     {
         val mPrefs = getPreferences(Context.MODE_PRIVATE)
         val gson = Gson()
@@ -87,11 +104,12 @@ class MainActivity : ConnectionsActivity() {
 
         val obj = gson.fromJson<ArrayList<UserInformations>>(json, type) ?: return
         NearbyUsers.contacts = obj
-
-        Log.d("Keepin","LENGTH : " + NearbyUsers.contacts.size + " ::: " + json)
     }
 
-    fun saveContacts()
+    /**
+     * Save the list of contacts in the shared preferences
+     */
+    private fun saveContacts()
     {
         val sharedPref = getPreferences(Context.MODE_PRIVATE) ?: return
         val prefsEditor = sharedPref.edit()
@@ -120,6 +138,9 @@ class MainActivity : ConnectionsActivity() {
         saveContacts()
     }
 
+    /**
+     * Called when an item has been selected on the bottom navigation view. Change the main fragment accordingly
+     */
     fun bottomNavigationItemSelected(item : MenuItem) : Boolean {
 
         var selectedFragment : Fragment ?= null
@@ -147,18 +168,31 @@ class MainActivity : ConnectionsActivity() {
         return true
     }
 
+    /**
+     * The name that is used when connecting to a nearby device
+     */
     override fun getName(): String {
         return myUserInformations.firstName
     }
 
+    /**
+     * The service ID used to identify the app (here it's the package name)
+     */
     override fun getServiceId(): String {
         return SERVICE_ID
     }
 
+    /**
+     * Get the strategy used for the communication
+     */
     override fun getStrategy(): Strategy {
         return STRATEGY
     }
 
+    /**
+     * Called when an endpoint has been discovered. If we are not already connected to it, we try
+     * the connection
+     */
     override fun onEndpointDiscovered(endpoint: Endpoint) {
         // We found an advertiser!
         stopDiscovering()
@@ -168,6 +202,9 @@ class MainActivity : ConnectionsActivity() {
         }
     }
 
+    /**
+     * When the discovery has started, display a message so the user is aware that it is working
+     */
     override fun startDiscovering() {
         super.startDiscovering()
 
@@ -176,34 +213,40 @@ class MainActivity : ConnectionsActivity() {
         ).show()
     }
 
+    /**
+     * When the connection has been initiated with a device, automatically accept the connection
+     */
     override fun onConnectionInitiated(endpoint: Endpoint, connectionInfo: ConnectionInfo) {
-        // A connection to another device has been initiated! We'll use the auth token, which is the
-        // same on both devices, to pick a color to use when we're connected. This way, users can
-        // visually see which device they connected with.
-
         // We accept the connection immediately.
         acceptConnection(endpoint)
     }
 
+    /**
+     * When we are connected to a device, add it to the list of connected devices
+     */
     override fun onEndpointConnected(endpoint: Endpoint) {
         Toast.makeText(
             this, getString(R.string.toast_connected, endpoint.name), Toast.LENGTH_SHORT
         ).show()
-//        setState(State.CONNECTED)
 
         NearbyUsers.userList.addItem(PublicUser(endpoint.id, endpoint.name, Status.CONNECTED))
         startDiscovering()
     }
 
+    /**
+     * When a device has been disconnected, we remove it from the list of connected devices
+     */
     override fun onEndpointDisconnected(endpoint: Endpoint) {
         Toast.makeText(
             this, getString(R.string.toast_disconnected, endpoint.name), Toast.LENGTH_SHORT
         ).show()
-//        setState(State.SEARCHING)
 
         NearbyUsers.userList.removeItem(endpoint.id)
     }
 
+    /**
+     * When the connection has failed, we restart the discovery
+     */
     override fun onConnectionFailed(endpoint: Endpoint) {
         // Let's try someone else.
         if (!isDiscovering) {
@@ -211,61 +254,67 @@ class MainActivity : ConnectionsActivity() {
         }
     }
 
+    /**
+     * Called when a user has been selected inside the search fragment
+     * If the user informations have not been requested yet, we send a request. Otherwise they
+     * have accepted our request and their informations are displayed
+     */
     fun userSelected(view : View)
     {
         val vwParentRow = view as LinearLayout
         val firstname = (vwParentRow.getChildAt(1) as TextView).text.toString()
-        val btnChild = vwParentRow.getChildAt(2) as ImageButton
 
         var clickedUser = NearbyUsers.userList.getUser(firstname)
 
         val endpointId = clickedUser?.endpointId
 
-//        var fragment : Fragment? = SelectedUserFragment()
-//        val args = Bundle()
-//        args.putString(getString(R.string.endpoint_id_key), endpointId)
-//        fragment!!.arguments = args
-//
-//        supportFragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit()
         if (clickedUser?.status == Status.CONNECTED)
         {
             sendMessage(Message(MessageType.REQUEST_PERMISSION, null), endpointId.orEmpty())
             NearbyUsers.userList.modifyStatus(clickedUser, Status.ASKED)
-        } else if (clickedUser?.status == Status.ACCTEPTED)
+        }
+        else if (clickedUser?.status == Status.ACCTEPTED)
         {
             val lastname = NearbyUsers.contacts.find { u -> u.firstName == firstname }?.lastName
-            var fragment : Fragment? = SelectedUserFragment()
-            val args = Bundle()
-            args.putString(getString(R.string.firstname_key), firstname)
-            args.putString(getString(R.string.lastname_key), lastname)
-            fragment!!.arguments = args
 
-            supportFragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit()
+            displayContact(firstname, lastname)
         }
     }
 
+    /**
+     * When a contact has been selected in the contact list, display it
+     */
     fun contactSelected(view: View)
     {
         val vwParentRow = view as LinearLayout
-        val image = vwParentRow.getChildAt(0) as ImageView
         val firstName = (vwParentRow.getChildAt(1) as TextView).text.toString()
         val lastName = (vwParentRow.getChildAt(2) as TextView).text.toString()
 
+        displayContact(firstName, lastName)
 
+    }
+
+    /**
+     * Display a contact. Start a new fragment with the first and last name of the user to retrieve it
+     */
+    private fun displayContact(firstname: String?, lastname: String?)
+    {
         var fragment : Fragment? = SelectedUserFragment()
         val args = Bundle()
-        args.putString(getString(R.string.firstname_key), firstName)
-        args.putString(getString(R.string.lastname_key), lastName)
+        args.putString(getString(R.string.firstname_key), firstname)
+        args.putString(getString(R.string.lastname_key), lastname)
         fragment!!.arguments = args
 
         supportFragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit()
     }
 
+    /**
+     * When the permission to access the user information has been accepted, send a message containing
+     * the user informations and remove the notification
+     */
     fun requestAccept(view : View)
     {
         val vwParentRow = view.parent as LinearLayout
-        val image = vwParentRow.getChildAt(0) as ImageView
-        val firstName = vwParentRow.getChildAt(1) as TextView
         val endpointId = (vwParentRow.getChildAt(2) as TextView).text.toString()
 
         sendMessage(Message(MessageType.USER_INFORMATIONS, myUserInformations), endpointId)
@@ -273,11 +322,12 @@ class MainActivity : ConnectionsActivity() {
         removeNotification(endpointId)
     }
 
+    /**
+     * When the request has been refused, send a message and remove the notification
+     */
     fun requestRefuse(view : View)
     {
         val vwParentRow = view.parent as LinearLayout
-        val image = vwParentRow.getChildAt(0) as ImageView
-        val firstName = vwParentRow.getChildAt(1) as TextView
         val endpointId = (vwParentRow.getChildAt(2) as TextView).text.toString()
 
         sendMessage(Message(MessageType.PERMISSION_REFUSED, myUserInformations), endpointId)
@@ -285,19 +335,28 @@ class MainActivity : ConnectionsActivity() {
         removeNotification(endpointId)
     }
 
+    /**
+     * Remove the notification from the list
+     */
     private fun removeNotification(endpointId: String)
     {
         NearbyUsers.notificationList.removeItem(endpointId)
     }
 
+    /**
+     * Helper method used to convert a message to a payload and send it
+     */
     fun sendMessage(message: Message, endpointId: String)
     {
         val payload = Payload.fromBytes(SerializationUtils.serialize(message))
         send(payload, endpointId)
-
     }
 
-
+    /**
+     * Called when a message has been received.
+     * Convert the payload into a message and act accordingly.
+     * Also notify the listeners that have been subscribed to this event
+     */
     override fun onReceive(endpoint: Endpoint?, payload: Payload?) {
         val bytes = payload?.asBytes() ?:return
         val message = SerializationUtils.deserialize<Message>(bytes)
@@ -317,6 +376,9 @@ class MainActivity : ConnectionsActivity() {
             listener.messageReceived(endpoint, message)
     }
 
+    /**
+     * Add a contact to the list
+     */
     private fun addContact(userInformations: UserInformations)
     {
         if (!NearbyUsers.contacts.any{ u -> u.firstName == userInformations.firstName && u.lastName == userInformations.lastName})

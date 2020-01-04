@@ -4,11 +4,10 @@ import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import ch.hesso.keepin.BR
 import java.io.Serializable
-import kotlin.reflect.KMutableProperty
-import kotlin.reflect.KProperty
-import kotlin.reflect.full.isSupertypeOf
-import kotlin.reflect.full.memberProperties
 
+/**
+ * Data class holding informations about the user
+ */
 data class UserInformations(private var _userName: String = "",
                             private var _firstName: String = "",
                             private var _lastName : String = "",

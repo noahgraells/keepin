@@ -1,4 +1,4 @@
-package ch.hesso.keepin.Utils;
+package ch.hesso.keepin.utils;
 
 /** A set of constants used within the app. */
 public class Constants {

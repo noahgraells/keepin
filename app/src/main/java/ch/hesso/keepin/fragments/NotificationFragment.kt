@@ -6,24 +6,22 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ch.hesso.keepin.MainActivity
 
 import ch.hesso.keepin.R
-import ch.hesso.keepin.Utils.ConnectionsActivity
-import ch.hesso.keepin.Utils.MessageReceived
-import ch.hesso.keepin.Utils.NearbyUsers
+import ch.hesso.keepin.utils.ConnectionsActivity
+import ch.hesso.keepin.utils.MessageReceived
+import ch.hesso.keepin.utils.NearbyUsers
 import ch.hesso.keepin.enums.MessageType
 import ch.hesso.keepin.enums.Status
 import ch.hesso.keepin.pojos.Message
 import ch.hesso.keepin.pojos.PublicUser
-import ch.hesso.keepin.pojos.UserInformations
 
+/**
+ * Fragment used to display user requests
+ */
 class NotificationFragment : Fragment(),  MessageReceived {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -39,6 +37,9 @@ class NotificationFragment : Fragment(),  MessageReceived {
         return view
     }
 
+    /**
+     * When a message has been received, if it is a request permission, add a notification
+     */
     override fun messageReceived(endpoint: ConnectionsActivity.Endpoint?, message: Message) {
         when (message.type)
         {

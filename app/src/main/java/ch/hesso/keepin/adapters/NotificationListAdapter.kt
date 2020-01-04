@@ -5,29 +5,30 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ch.hesso.keepin.R
-import ch.hesso.keepin.Utils.NearbyUsers
-import ch.hesso.keepin.enums.Status
+import ch.hesso.keepin.utils.NearbyUsers
 import ch.hesso.keepin.pojos.PublicUser
-import kotlinx.android.synthetic.main.fragment_selected_user.view.*
 import kotlinx.android.synthetic.main.item_notification_user.view.*
-import kotlinx.android.synthetic.main.item_public_user.view.*
 import kotlinx.android.synthetic.main.item_public_user.view.txv_firstname
 
+/**
+ * Adapter used to map items to notification inside the notification list
+ */
 class NotificationListAdapter(val items : ArrayList<PublicUser>) : RecyclerView.Adapter<NotificationViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationViewHolder {
 
         return NotificationViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_notification_user, parent, false))
     }
 
+    /**
+     * Get the number of item inside the list
+     */
     override fun getItemCount(): Int {
         return items.size
     }
 
-    fun getUser(username: String) : PublicUser?
-    {
-        return items.find { user : PublicUser -> user.name == username }
-    }
-
+    /**
+     * Add a user to the list and update the notification  badge
+     */
     fun addItem(user: PublicUser)
     {
         if (!items.any { u -> u.endpointId == user.endpointId})
@@ -42,6 +43,9 @@ class NotificationListAdapter(val items : ArrayList<PublicUser>) : RecyclerView.
         }
     }
 
+    /**
+     * Remove an item from the list and adapt the notification badge accordingly
+     */
     fun removeItem(endpointId : String)
     {
         for (i in items.indices.reversed()) {
