@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ch.hesso.keepin.MainActivity
@@ -29,10 +30,15 @@ class NotificationFragment : Fragment(),  MessageReceived {
 
         (activity as MainActivity).addListener(this)
         var notificationList = view.findViewById(R.id.notification_list) as RecyclerView
+        notificationList.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+
 
         var layoutManager = LinearLayoutManager(activity)
         notificationList!!.layoutManager = layoutManager
         notificationList.adapter = NearbyUsers.notificationList
+
+        NearbyUsers.notificationList.addItem(PublicUser("", "Noah Graells", Status.ASKING))
+        NearbyUsers.notificationList.addItem(PublicUser("", "Farid Abdalla", Status.ASKING))
 
         return view
     }

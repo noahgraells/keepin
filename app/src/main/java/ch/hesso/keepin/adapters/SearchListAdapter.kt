@@ -93,7 +93,7 @@ class SearchListAdapter(val items : ArrayList<PublicUser>) : RecyclerView.Adapte
             Status.CONNECTED -> holder.actionButton.setImageResource(R.drawable.ic_ask_24dp)
             Status.ASKED -> holder.actionButton.setImageResource(R.drawable.ic_wait_24dp)
             Status.ACCTEPTED -> holder.actionButton.setImageResource(R.drawable.ic_valid_24dp)
-            Status.REFUSED -> holder.actionButton.setImageResource(R.drawable.ic_refuse_24dp)
+            Status.ASKING -> holder.actionButton.setImageResource(R.drawable.ic_refuse_24dp)
         }
 
 
