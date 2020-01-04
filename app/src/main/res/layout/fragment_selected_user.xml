@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -11,13 +12,6 @@
             type="ch.hesso.keepin.pojos.UserInformations" />
     </data>
 
-<LinearLayout
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".fragments.SelectedUserFragment">
-
 
     <ScrollView
         android:layout_width="match_parent"
@@ -27,23 +21,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="10dp">
-
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                app:srcCompat="@drawable/common_google_signin_btn_icon_dark" />
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:text="@={user.userName}"
-                android:textAlignment="center"
-                android:textSize="24sp" />
+            android:padding="30dp"
+            tools:context=".fragments.SelectedUserFragment">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -51,21 +30,62 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/fullname"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/firstName" />
+                    android:padding="5dp"
+                    android:text="@{user.firstName + ` ` + user.lastName}"
+                    android:textColor="?attr/colorMainText"
+                    android:textSize="@dimen/title_text_size"
+                    android:textStyle="bold" />
 
-                <EditText
-                    android:id="@+id/edtFirstName"
-                    android:layout_width="wrap_content"
+                <ImageButton
+                    android:id="@+id/btnSaveContact"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0"
+                    android:background="@drawable/shape_icon_button"
+                    android:scaleType="fitXY"
+                    android:tint="?attr/colorMainText"
+                    android:src="@drawable/ic_save_24dp" />
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/fst_divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?attr/colorHintText"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imgEmail"
+                    android:layout_width="@dimen/profile_icon_size"
+                    android:layout_height="@dimen/profile_icon_size"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/profile_icon_margin"
+                    android:layout_weight="0"
+                    android:tint="?attr/colorMainText"
+                    app:srcCompat="@drawable/ic_email_24dp" />
+
+                <TextView
+                    android:id="@+id/txvEmail"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:ems="10"
-                    android:inputType="none"
-                    android:focusableInTouchMode="false"
-                    android:focusable="false"
-                    android:text="@={user.firstName}" />
+                    android:text="@{user.email}"
+                    android:textColor="?attr/colorMainText"
+                    android:textSize="@dimen/info_text_size" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -73,62 +93,141 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/lastName" />
+                <ImageView
+                    android:id="@+id/imgPhone"
+                    android:layout_width="@dimen/profile_icon_size"
+                    android:layout_height="@dimen/profile_icon_size"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/profile_icon_margin"
+                    android:layout_weight="0"
+                    android:tint="?attr/colorMainText"
+                    app:srcCompat="@drawable/ic_phone_24dp" />
 
-                <EditText
-                    android:id="@+id/edtLastName"
-                    android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/txvPhone"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:ems="10"
-                    android:inputType="none"
-                    android:focusableInTouchMode="false"
-                    android:focusable="false"
-                    android:text="@={user.lastName}" />
+                    android:textColor="?attr/colorMainText"
+                    android:textSize="@dimen/info_text_size" />
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/scd_divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?attr/colorHintText"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="0"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imgFacebook"
+                    android:layout_width="@dimen/profile_icon_size"
+                    android:layout_height="@dimen/profile_icon_size"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/profile_icon_margin"
+                    android:layout_weight="0"
+                    android:tint="?attr/colorMainText"
+                    app:srcCompat="@drawable/ic_facebook_24dp" />
+
+                <TextView
+                    android:id="@+id/txvFacebook"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="?attr/colorMainText"
+                    android:textSize="@dimen/info_text_size" />
+
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="5dp"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/email" />
+                <ImageView
+                    android:id="@+id/imgTwitter"
+                    android:layout_width="@dimen/profile_icon_size"
+                    android:layout_height="@dimen/profile_icon_size"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/profile_icon_margin"
+                    android:layout_weight="0"
+                    android:tint="?attr/colorMainText"
+                    app:srcCompat="@drawable/ic_twitter_24dp" />
 
-                <EditText
-                    android:id="@+id/edtEmail"
-                    android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/txvTwitter"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:ems="10"
-                    android:inputType="none"
-                    android:focusableInTouchMode="false"
-                    android:focusable="false"
-                    android:text="@={user.email}" />
+                    android:text="@{user.email}"
+                    android:textColor="?attr/colorMainText"
+                    android:textSize="@dimen/info_text_size" />
+
             </LinearLayout>
 
-            <Button
-                android:id="@+id/btnRequestInformation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/request_information" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="5dp"
+                android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/btnSaveContact"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:text="@string/save_contact" />
+                <ImageView
+                    android:id="@+id/imgInstagram"
+                    android:layout_width="@dimen/profile_icon_size"
+                    android:layout_height="@dimen/profile_icon_size"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/profile_icon_margin"
+                    android:layout_weight="0"
+                    android:tint="?attr/colorMainText"
+                    app:srcCompat="@drawable/ic_instagram_24dp" />
+
+                <TextView
+                    android:id="@+id/txvInstagram"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="?attr/colorMainText"
+                    android:textSize="@dimen/info_text_size" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imgLinkedIn"
+                    android:layout_width="@dimen/profile_icon_size"
+                    android:layout_height="@dimen/profile_icon_size"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/profile_icon_margin"
+                    android:layout_weight="0"
+                    android:tint="?attr/colorMainText"
+                    app:srcCompat="@drawable/ic_linkedin_24dp" />
+
+                <TextView
+                    android:id="@+id/txvLinkedIn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="?attr/colorMainText"
+                    android:textSize="@dimen/info_text_size" />
+
+            </LinearLayout>
+
 
         </LinearLayout>
     </ScrollView>
 
-</LinearLayout>
 </layout>

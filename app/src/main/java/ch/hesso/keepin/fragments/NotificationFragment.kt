@@ -37,9 +37,6 @@ class NotificationFragment : Fragment(),  MessageReceived {
         notificationList!!.layoutManager = layoutManager
         notificationList.adapter = NearbyUsers.notificationList
 
-        NearbyUsers.notificationList.addItem(PublicUser("", "Noah Graells", Status.ASKING))
-        NearbyUsers.notificationList.addItem(PublicUser("", "Farid Abdalla", Status.ASKING))
-
         return view
     }
 

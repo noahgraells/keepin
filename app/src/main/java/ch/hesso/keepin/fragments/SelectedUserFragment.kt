@@ -20,9 +20,6 @@ import ch.hesso.keepin.pojos.UserInformations
 import android.provider.ContactsContract
 import android.content.Intent
 
-
-
-
 /**
  * A simple [Fragment] subclass.
  */
@@ -46,9 +43,6 @@ class SelectedUserFragment : Fragment(), MessageReceived {
 
         btnSaveContact = view.findViewById<Button>(R.id.btnSaveContact)
         btnSaveContact!!.setOnClickListener{ saveContact() }
-
-
-        btnRequestInformations = view.findViewById<Button>(R.id.btnRequestInformation)
 
         if (!endpointId.isNullOrBlank())
         {

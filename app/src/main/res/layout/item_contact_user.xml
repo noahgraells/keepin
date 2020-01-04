@@ -42,6 +42,7 @@
         android:layout_weight="0"
         android:background="@drawable/shape_icon_button"
         android:scaleType="fitXY"
-        android:src="@drawable/ic_profile_24dp"/>
+        android:tint="?attr/colorHintText"
+        android:src="@drawable/ic_save_24dp" />
 
 </LinearLayout>

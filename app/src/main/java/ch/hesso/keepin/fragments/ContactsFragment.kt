@@ -37,24 +37,4 @@ class ContactsFragment : Fragment() {
 
         return view
     }
-
-    override fun onStart() {
-        super.onStart()
-        Log.v("Debug", "Contacts - onStart");
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.v("Debug", "Contacts - onPause");
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.v("Debug", "Contacts - onResume");
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.v("Debug", "Contacts - onDestroy");
-    }
 }
