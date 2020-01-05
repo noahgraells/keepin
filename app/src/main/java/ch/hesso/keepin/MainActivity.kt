@@ -36,6 +36,7 @@ import org.apache.commons.lang3.SerializationUtils
 class MainActivity : ConnectionsActivity() {
 
     var myUserInformations : UserInformations = UserInformations()
+
     private var profileCreated : Boolean = false
 
     private var txvToolbar : TextView ?= null
@@ -60,7 +61,7 @@ class MainActivity : ConnectionsActivity() {
         loadUserInformations()
         loadContacts()
 
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        var bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
 
         txvToolbar = findViewById(R.id.toolbarTextView)
@@ -69,24 +70,12 @@ class MainActivity : ConnectionsActivity() {
         setSupportActionBar(toolbar)
 
 
-        bottomNavigationView.setOnNavigationItemSelectedListener { item -> bottomNavigationItemSelected(item)}
+        bottomNavigationView!!.setOnNavigationItemSelectedListener { item -> bottomNavigationItemSelected(item)}
+
+
+        bottomNavigationView!!.selectedItemId = R.id.navigation_discover
 
         SERVICE_ID = packageName
-    }
-
-    override fun onStart() {
-        super.onStart()
-        
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
-
-        if (profileCreated)
-        {
-            bottomNavigationView.selectedItemId = R.id.navigation_discover
-        }
-        else
-        {
-            bottomNavigationView.selectedItemId = R.id.navigation_profile
-        }
     }
 
     /**
