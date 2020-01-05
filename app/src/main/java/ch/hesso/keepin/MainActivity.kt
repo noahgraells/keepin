@@ -68,7 +68,16 @@ class MainActivity : ConnectionsActivity() {
         toolbar.title = ""
         setSupportActionBar(toolbar)
 
+
         bottomNavigationView.setOnNavigationItemSelectedListener { item -> bottomNavigationItemSelected(item)}
+
+        SERVICE_ID = packageName
+    }
+
+    override fun onStart() {
+        super.onStart()
+        
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
         if (profileCreated)
         {
@@ -78,9 +87,6 @@ class MainActivity : ConnectionsActivity() {
         {
             bottomNavigationView.selectedItemId = R.id.navigation_profile
         }
-
-
-        SERVICE_ID = packageName
     }
 
     /**
