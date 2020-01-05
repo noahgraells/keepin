@@ -28,6 +28,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="@string/firstName"
+                android:tint="?attr/colorHintText"
                 android:text="@={user.firstName}"
                 android:textColor="?attr/colorMainText" />
 
@@ -38,6 +39,7 @@
                 android:layout_marginBottom="15dp"
                 android:ems="10"
                 android:hint="@string/lastName"
+                android:tint="?attr/colorHintText"
                 android:text="@={user.lastName}"
                 android:textColor="?attr/colorMainText" />
 
