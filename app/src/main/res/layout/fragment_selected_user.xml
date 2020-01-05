@@ -108,6 +108,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:text="@{user.phone}"
                     android:textColor="?attr/colorMainText"
                     android:textSize="@dimen/info_text_size" />
 
@@ -143,6 +144,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:text="@{user.facebook}"
                     android:textColor="?attr/colorMainText"
                     android:textSize="@dimen/info_text_size" />
 
@@ -169,7 +171,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@{user.email}"
+                    android:text="@{user.twitter}"
                     android:textColor="?attr/colorMainText"
                     android:textSize="@dimen/info_text_size" />
 
@@ -179,7 +181,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="5dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:onClick="openInstagram">
 
                 <ImageView
                     android:id="@+id/imgInstagram"
@@ -196,6 +199,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:text="@{user.instagram}"
                     android:textColor="?attr/colorMainText"
                     android:textSize="@dimen/info_text_size" />
 
@@ -221,6 +225,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:text="@{user.linkedin}"
                     android:textColor="?attr/colorMainText"
                     android:textSize="@dimen/info_text_size" />
 

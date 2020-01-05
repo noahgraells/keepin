@@ -26,7 +26,9 @@ import ch.hesso.keepin.pojos.UserInformations
 import org.apache.commons.lang3.SerializationUtils
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-
+import android.content.Intent
+import android.content.ActivityNotFoundException
+import android.net.Uri
 
 class MainActivity : ConnectionsActivity() {
 
@@ -288,12 +290,10 @@ class MainActivity : ConnectionsActivity() {
     {
         val vwParentRow = view as LinearLayout
         val firstName = (vwParentRow.getChildAt(1) as TextView).text.toString()
-//        val lastName = (vwParentRow.getChildAt(2) as TextView).text.toString()
 
         val lastName = NearbyUsers.contacts.find { u -> u.firstName == firstName }?.lastName
 
         displayContact(firstName, lastName)
-
     }
 
     /**
@@ -308,6 +308,29 @@ class MainActivity : ConnectionsActivity() {
         fragment!!.arguments = args
 
         supportFragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit()
+    }
+
+    fun openInstagram(view:View)
+    {
+        val vwParentRow = view as LinearLayout
+        val accountName = (vwParentRow.getChildAt(1) as TextView).text.toString()
+
+        val uri = Uri.parse("http://instagram.com/_u/$accountName")
+        val likeIng = Intent(Intent.ACTION_VIEW, uri)
+
+        likeIng.setPackage("com.instagram.android")
+
+        try {
+            startActivity(likeIng)
+        } catch (e: ActivityNotFoundException) {
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("http://instagram.com/$accountName")
+                )
+            )
+        }
+
     }
 
     /**
