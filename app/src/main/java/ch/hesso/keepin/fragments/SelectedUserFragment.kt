@@ -61,6 +61,7 @@ class SelectedUserFragment : Fragment(), MessageReceived {
         contactIntent
             .putExtra(ContactsContract.Intents.Insert.NAME, userInfo.firstName + " " + userInfo.lastName)
             .putExtra(ContactsContract.Intents.Insert.EMAIL, userInfo.email)
+            .putExtra(ContactsContract.Intents.Insert.PHONE, userInfo.phone)
 
         startActivityForResult(contactIntent, 1)
     }

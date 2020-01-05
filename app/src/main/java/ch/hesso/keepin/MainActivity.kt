@@ -124,24 +124,25 @@ class MainActivity : ConnectionsActivity() {
         prefsEditor.commit()
     }
 
-    override fun onStart() {
-        super.onStart()
-
+    override fun onResume() {
+        super.onResume()
         startDiscovering()
         startAdvertising()
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        stopDiscovering()
+        stopAdvertising()
     }
 
     override fun onStop() {
         super.onStop()
 
-        stopDiscovering()
-        stopAdvertising()
         saveContacts()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-    }
 
     /**
      * Called when an item has been selected on the bottom navigation view. Change the main fragment accordingly
@@ -370,6 +371,16 @@ class MainActivity : ConnectionsActivity() {
         } catch (e: Exception) {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/$accountName")))
         }
+    }
+
+    fun openLinkedin(view:View)
+    {
+        val vwParentRow = view as LinearLayout
+        val accountName = (vwParentRow.getChildAt(1) as TextView).text.toString()
+
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.data = Uri.parse("https://www.linkedin.com/in/$accountName")
+        startActivity(intent)
     }
 
     /**
