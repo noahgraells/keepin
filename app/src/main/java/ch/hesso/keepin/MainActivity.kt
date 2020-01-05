@@ -1,34 +1,37 @@
 package ch.hesso.keepin
 
+import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.widget.*
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
-import ch.hesso.keepin.utils.ConnectionsActivity
-import ch.hesso.keepin.utils.MessageReceived
-import ch.hesso.keepin.utils.NearbyUsers
+import ch.hesso.keepin.enums.MessageType
 import ch.hesso.keepin.enums.Status
 import ch.hesso.keepin.fragments.ContactsFragment
 import ch.hesso.keepin.fragments.DiscoverFragment
 import ch.hesso.keepin.fragments.ProfileFragment
 import ch.hesso.keepin.fragments.SelectedUserFragment
+import ch.hesso.keepin.pojos.Message
 import ch.hesso.keepin.pojos.PublicUser
+import ch.hesso.keepin.pojos.UserInformations
+import ch.hesso.keepin.utils.ConnectionsActivity
+import ch.hesso.keepin.utils.MessageReceived
+import ch.hesso.keepin.utils.NearbyUsers
 import com.google.android.gms.nearby.connection.ConnectionInfo
 import com.google.android.gms.nearby.connection.Payload
 import com.google.android.gms.nearby.connection.Strategy
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import ch.hesso.keepin.enums.MessageType
-import ch.hesso.keepin.pojos.Message
-import ch.hesso.keepin.pojos.UserInformations
-import org.apache.commons.lang3.SerializationUtils
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import android.content.Intent
-import android.content.ActivityNotFoundException
-import android.net.Uri
+import org.apache.commons.lang3.SerializationUtils
+
 
 class MainActivity : ConnectionsActivity() {
 
@@ -307,7 +310,7 @@ class MainActivity : ConnectionsActivity() {
         args.putString(getString(R.string.lastname_key), lastname)
         fragment!!.arguments = args
 
-        supportFragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).commit()
     }
 
     fun openInstagram(view:View)
@@ -330,6 +333,29 @@ class MainActivity : ConnectionsActivity() {
                 )
             )
         }
+    }
+
+    fun openTwitter(view:View)
+    {
+        val vwParentRow = view as LinearLayout
+        val accountName = (vwParentRow.getChildAt(1) as TextView).text.toString()
+
+        var intent: Intent? = null
+        try {
+            // get the Twitter app if possible
+            packageManager.getPackageInfo("com.twitter.android", 0)
+            intent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("twitter://user?screen_name=$accountName")
+            )
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        } catch (e: Exception) {
+            // no Twitter app, revert to browser
+            intent =
+                Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/$accountName"))
+        }
+
+        startActivity(intent)
 
     }
 
