@@ -136,11 +136,11 @@ class MainActivity : ConnectionsActivity() {
 
         stopDiscovering()
         stopAdvertising()
+        saveContacts()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        saveContacts()
     }
 
     /**
@@ -357,6 +357,19 @@ class MainActivity : ConnectionsActivity() {
 
         startActivity(intent)
 
+    }
+
+    fun openFacebook(view:View)
+    {
+        val vwParentRow = view as LinearLayout
+        val accountName = (vwParentRow.getChildAt(1) as TextView).text.toString()
+
+        try {
+            packageManager.getPackageInfo("com.facebook.katana", 0)
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("fb://facewebmodal/f?href=https://www.facebook.com/$accountName")))
+        } catch (e: Exception) {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/$accountName")))
+        }
     }
 
     /**

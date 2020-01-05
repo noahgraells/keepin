@@ -127,7 +127,8 @@
                 android:layout_height="match_parent"
                 android:layout_marginBottom="5dp"
                 android:layout_weight="0"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:onClick="openFacebook">
 
                 <ImageView
                     android:id="@+id/imgFacebook"
